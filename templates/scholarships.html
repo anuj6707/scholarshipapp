@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}All Scholarships Directory | ScholarMatch{% endblock %}
+
+{% block content %}
+<div class="container section-py">
+  <div class="section-header" style="text-align: left; max-width: 100%; margin-bottom: 2rem;">
+    <span class="section-tag">Directory</span>
+    <h1 style="font-size: 2.25rem; margin-bottom: 0.5rem;">Browse All College Scholarships</h1>
+    <p style="color: var(--slate-600); font-size: 1.05rem;">
+      Explore all <strong>{{ scholarships | length }} verified scholarships</strong> across engineering departments, merit tiers, and government schemes.
+    </p>
+  </div>
+
+  <!-- Search & Filter Controls -->
+  <div class="browser-controls">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" class="search-input" placeholder="Search by scholarship name, provider, or keywords (e.g. Cummins, Women, AICTE, Siemens)...">
+    </div>
+
+    <div class="filter-row">
+      <div>
+        <label for="filter-branch" class="form-label" style="font-size: 0.8rem;">Filter by Branch</label>
+        <select id="filter-branch" class="form-control" style="padding: 0.55rem 0.75rem; font-size: 0.875rem;">
+          <option value="all">All Branches</option>
+          {% for branch in branches %}
+            <option value="{{ branch }}">{{ branch }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div>
+        <label for="filter-gender" class="form-label" style="font-size: 0.8rem;">Filter by Gender</label>
+        <select id="filter-gender" class="form-control" style="padding: 0.55rem 0.75rem; font-size: 0.875rem;">
+          <option value="all">All Genders</option>
+          <option value="Female">Female Only</option>
+          <option value="Male">Male / All</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="filter-category" class="form-label" style="font-size: 0.8rem;">Filter by Category</label>
+        <select id="filter-category" class="form-control" style="padding: 0.55rem 0.75rem; font-size: 0.875rem;">
+          <option value="all">All Categories</option>
+          {% for cat in categories %}
+            <option value="{{ cat }}">{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scholarships Grid -->
+  <div class="scholarship-grid" id="scholarships-grid">
+    {% for sch in scholarships %}
+      <div class="scholarship-card browser-card"
+           data-name="{{ sch.name }}"
+           data-provider="{{ sch.provider }}"
+           data-branches="{{ sch.eligible_branches | join(' ') }}"
+           data-gender="{{ sch.eligible_gender | join(' ') }}"
+           data-category="{{ sch.eligible_categories | join(' ') }}"
+           data-desc="{{ sch.description }}">
+        
+        <div class="card-top">
+          <div class="card-badge-row">
+            {% if sch.ml_target_key %}
+              <span class="badge badge-ai">⚡ AI Supported</span>
+            {% else %}
+              <span class="badge badge-rule">📋 Rule Match</span>
+            {% endif %}
+            
+            <span style="font-size: 0.75rem; color: var(--slate-500); font-weight: 600;">
+              📅 {{ sch.deadline }}
+            </span>
+          </div>
+
+          <h3 class="sch-title">{{ sch.name }}</h3>
+          <p class="sch-provider">{{ sch.provider }}</p>
+          
+          <div class="sch-amount">{{ sch.maximum_amount | currency_inr }}</div>
+          <p class="sch-benefit">{{ sch.benefit_type }}</p>
+        </div>
+
+        <div class="card-content">
+          <p style="font-size: 0.875rem; color: var(--slate-600); margin-bottom: 1rem;">
+            {{ sch.description | truncate(130) }}
+          </p>
+
+          <div style="font-size: 0.8rem; color: var(--slate-500); display: flex; flex-direction: column; gap: 0.25rem;">
+            <div><strong>Eligible Gender:</strong> {{ sch.eligible_gender | join(', ') }}</div>
+            <div><strong>Branches:</strong> {{ sch.eligible_branches | join(', ') | truncate(45) }}</div>
+            <div><strong>Max Income:</strong> {{ sch.maximum_family_income | currency_inr if sch.maximum_family_income else 'No limit' }}</div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a href="{{ url_for('scholarship_detail', scholarship_id=sch.id) }}" class="btn btn-secondary card-btn">
+            <span>View Details & Rules</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Empty Search Result State -->
+  <div id="no-scholarships-found" style="display: none; text-align: center; padding: 4rem 1rem;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+    <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem;">No scholarships match your filters</h3>
+    <p style="color: var(--slate-500); font-size: 0.95rem;">
+      Try adjusting your search keywords or clearing some filters.
+    </p>
+  </div>
+</div>
+{% endblock %}

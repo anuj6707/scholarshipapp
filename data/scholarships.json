@@ -1,0 +1,2040 @@
+[
+  {
+    "id": "cummins",
+    "name": "Cummins Scholarship Program",
+    "provider": "Cummins India Foundation",
+    "description": "Nurturing Brilliance Cummins Scholarship Program provides financial assistance and mentorship to deserving and meritorious students from economically challenged backgrounds pursuing professional engineering degree or diploma courses.",
+    "maximum_amount": 85545,
+    "benefit_type": "Tuition Fees, Exam Fees, Laptop & Mentorship",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Electronics & Telecommunication",
+      "Civil Engineering"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "minimum_cgpa": 6.75,
+    "minimum_percentage": 60.0,
+    "maximum_family_income": 600000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "Maharashtra",
+      "Other",
+      "Delhi",
+      "Gujarat",
+      "Karnataka"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 25
+    },
+    "documents_required": [
+      "Income Certificate issued by competent authority (Tahashildar/Sub-Divisional Officer)",
+      "10th & 12th / Diploma Marksheets",
+      "College Admission Letter and Fee Structure",
+      "Aadhaar Card copy",
+      "Bank Account Passbook / Cancelled Cheque",
+      "Passport size photographs"
+    ],
+    "deadline": "2026-09-30",
+    "official_url": "https://www.cummins.com/en/in/about/corporate-responsibility/cummins-scholarship-program",
+    "application_url": "https://www.cummins.com/en/in/about/corporate-responsibility/cummins-scholarship-program",
+    "source_url": "https://www.cummins.com/in",
+    "last_verified": "2026-08-15",
+    "active": true,
+    "ml_target_key": "target_cummins",
+    "tags": [
+      "Engineering",
+      "Corporate CSR",
+      "Merit-cum-Means"
+    ]
+  },
+  {
+    "id": "siemens",
+    "name": "Siemens Scholarship Program",
+    "provider": "Siemens India",
+    "description": "A holistic development program supporting first-year meritorious engineering students from government and recognized engineering colleges across India experiencing financial constraints.",
+    "maximum_amount": 100000,
+    "benefit_type": "Full Tuition Reimbursement, Books Allowance, Project Support & Internship Training",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Electronics & Telecommunication",
+      "Civil Engineering"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "minimum_cgpa": 7.0,
+    "minimum_percentage": 60.0,
+    "maximum_family_income": 200000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 20
+    },
+    "documents_required": [
+      "Class 10th and 12th standard marksheets",
+      "Valid Income Certificate (less than ₹2 Lakhs p.a.)",
+      "Government College / AICTE Recognized Institute Admission Proof",
+      "Identity and Address Proof (Aadhaar / Voter ID)",
+      "Bank account details"
+    ],
+    "deadline": "2026-10-15",
+    "official_url": "https://www.siemens.com/in/en/company/sustainability/corporate-citizenship/siemens-scholarship-program.html",
+    "application_url": "https://www.siemens.com/in/en/company/sustainability/corporate-citizenship/siemens-scholarship-program.html",
+    "source_url": "https://www.siemens.com/in",
+    "last_verified": "2026-08-10",
+    "active": true,
+    "ml_target_key": "target_siemens",
+    "tags": [
+      "Engineering",
+      "High Value",
+      "First Year Only",
+      "Corporate CSR"
+    ]
+  },
+  {
+    "id": "reliance",
+    "name": "Reliance Foundation Undergraduate Scholarship",
+    "provider": "Reliance Foundation",
+    "description": "Supports talented and ambitious undergraduate students across all disciplines who are committed to making a difference in society. Selection includes an aptitude test and comprehensive evaluation.",
+    "maximum_amount": 200000,
+    "benefit_type": "Up to ₹2,00,000 grant over the degree duration",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "minimum_cgpa": 6.5,
+    "minimum_percentage": 60.0,
+    "maximum_family_income": 1500000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 25
+    },
+    "documents_required": [
+      "Class 12th Marksheet",
+      "College Bonafide / Enrollment Certificate",
+      "Family Income Proof (ITR / Form 16 / Income Certificate)",
+      "Aadhaar Card",
+      "Current Address Proof"
+    ],
+    "deadline": "2026-10-31",
+    "official_url": "https://www.scholarships.reliancefoundation.org",
+    "application_url": "https://www.scholarships.reliancefoundation.org/UG_Scholarship.aspx",
+    "source_url": "https://www.scholarships.reliancefoundation.org",
+    "last_verified": "2026-08-20",
+    "active": true,
+    "ml_target_key": "target_reliance",
+    "tags": [
+      "All Branches",
+      "High Value",
+      "First Year Only",
+      "Pan-India"
+    ]
+  },
+  {
+    "id": "lila_poonawala",
+    "name": "Lila Poonawala Foundation (LPF) Undergraduate Scholarship",
+    "provider": "Lila Poonawala Foundation",
+    "description": "An empowering scholarship program for academically exceptional young women from financially constrained backgrounds in Maharashtra pursuing engineering and technical degrees.",
+    "maximum_amount": 60000,
+    "benefit_type": "Annual Financial Grant & Comprehensive Employability Training",
+    "eligible_gender": [
+      "Female"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Electronics & Telecommunication",
+      "Civil Engineering"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "minimum_cgpa": 6.5,
+    "minimum_percentage": 65.0,
+    "maximum_family_income": 350000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "Maharashtra"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 23
+    },
+    "documents_required": [
+      "10th, 12th and Diploma (if direct 2nd year) marksheets",
+      "Valid Income Certificate of family from Tahashildar",
+      "Admission confirmation letter and fee receipt",
+      "Domicile Certificate of Maharashtra",
+      "Aadhaar Card and Student Bank Passbook"
+    ],
+    "deadline": "2026-09-25",
+    "official_url": "https://www.lilapoonawalafoundation.com",
+    "application_url": "https://www.lilapoonawalafoundation.com/scholarship-programs/",
+    "source_url": "https://www.lilapoonawalafoundation.com",
+    "last_verified": "2026-08-12",
+    "active": true,
+    "ml_target_key": "target_lila",
+    "tags": [
+      "Women in STEM",
+      "Maharashtra Domicile",
+      "Empowerment",
+      "Engineering"
+    ]
+  },
+  {
+    "id": "skf",
+    "name": "SKF India Scholarship Program",
+    "provider": "SKF India CSR",
+    "description": "Financial and career readiness support to meritorious young women and boys from low-income families pursuing diplomas and degrees in engineering and technical vocational streams.",
+    "maximum_amount": 50000,
+    "benefit_type": "Annual Scholarship + Skill Building & Career Mentorship",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Electronics & Telecommunication",
+      "Computer Engineering",
+      "Information Technology",
+      "Civil Engineering"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3
+    ],
+    "minimum_cgpa": 6.5,
+    "minimum_percentage": 70.0,
+    "maximum_family_income": 350000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "Maharashtra",
+      "Karnataka",
+      "Gujarat",
+      "Other"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 24
+    },
+    "documents_required": [
+      "Previous qualifying exam marksheets (minimum 70%)",
+      "Family income certificate / BPL card",
+      "Institute ID card and current semester fee receipt",
+      "Nationalized bank account details",
+      "Government photo ID proof"
+    ],
+    "deadline": "2026-10-10",
+    "official_url": "https://www.skf.com/in/organisation/sustainability/csr",
+    "application_url": "https://www.skf.com/in/organisation/sustainability/csr",
+    "source_url": "https://www.skf.com/in",
+    "last_verified": "2026-08-18",
+    "active": true,
+    "ml_target_key": "target_skf",
+    "tags": [
+      "Engineering",
+      "Technical",
+      "Merit-cum-Means"
+    ]
+  },
+  {
+    "id": "katalyst",
+    "name": "Katalyst India Girls Scholarship Program",
+    "provider": "Third Sector Partners / Katalyst India",
+    "description": "An award-winning initiative for high-potential young women from low-income communities pursuing professional engineering degrees, offering financial support, English and soft-skills training, and mentorship.",
+    "maximum_amount": 75000,
+    "benefit_type": "Annual Financial Grant, Laptop Provision & 600+ Hours of Professional Mentorship",
+    "eligible_gender": [
+      "Female"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Electronics & Telecommunication",
+      "Electrical Engineering",
+      "Mechanical Engineering",
+      "Civil Engineering"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "minimum_cgpa": 6.5,
+    "minimum_percentage": 70.0,
+    "maximum_family_income": 300000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "Maharashtra",
+      "Delhi",
+      "Karnataka",
+      "Gujarat",
+      "Other"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 22
+    },
+    "documents_required": [
+      "10th & 12th Mark sheets",
+      "CET / JEE Scorecard",
+      "Annual Family Income Certificate",
+      "College Bonafide certificate",
+      "Electricity bill of residence"
+    ],
+    "deadline": "2026-09-15",
+    "official_url": "https://katalystindia.org",
+    "application_url": "https://katalystindia.org/apply-now/",
+    "source_url": "https://katalystindia.org",
+    "last_verified": "2026-08-05",
+    "active": true,
+    "ml_target_key": "target_katalyst",
+    "tags": [
+      "Women in STEM",
+      "Mentorship",
+      "Laptop Grant",
+      "High Impact"
+    ]
+  },
+  {
+    "id": "adobe_wit",
+    "name": "Adobe India Women-in-Technology Scholarship",
+    "provider": "Adobe Systems India",
+    "description": "Recognizes outstanding female students in Computer Science, IT, and closely related STEM fields who demonstrate exceptional academic achievements, leadership, and passion for technology.",
+    "maximum_amount": 150000,
+    "benefit_type": "₹1,50,000 Grant, Opportunity for Adobe Internship & Grace Hopper Conference Attendance",
+    "eligible_gender": [
+      "Female"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Electronics & Telecommunication"
+    ],
+    "eligible_years": [
+      3,
+      4
+    ],
+    "minimum_cgpa": 7.5,
+    "minimum_percentage": 75.0,
+    "maximum_family_income": null,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 19,
+      "max": 26
+    },
+    "documents_required": [
+      "Official College Transcripts (all semesters till date)",
+      "Updated Technical Resume / CV",
+      "Statement of Purpose (SOP) and Technical Essay",
+      "Letter of Recommendation from College Professor / HoD",
+      "Portfolio / GitHub profile link"
+    ],
+    "deadline": "2026-11-15",
+    "official_url": "https://www.adobe.com/in/careers/university/scholarships/women-in-technology.html",
+    "application_url": "https://www.adobe.com/in/careers/university/scholarships/women-in-technology.html",
+    "source_url": "https://www.adobe.com/in",
+    "last_verified": "2026-08-22",
+    "active": true,
+    "ml_target_key": "target_adobe_wit",
+    "tags": [
+      "Women in STEM",
+      "Computer Science",
+      "Merit Based",
+      "Tech Industry"
+    ]
+  },
+  {
+    "id": "aicte_saksham",
+    "name": "AICTE Saksham Scholarship Scheme for Specially-Abled Students",
+    "provider": "Ministry of Education & AICTE, Government of India",
+    "description": "A flagship central government scholarship aimed at encouraging specially-abled students with disability equal to or greater than 40% pursuing technical degree or diploma courses at AICTE-approved institutions.",
+    "maximum_amount": 50000,
+    "benefit_type": "₹50,000 per annum towards college fee, books, equipment and assistive devices",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": 5.0,
+    "minimum_percentage": 50.0,
+    "maximum_family_income": 800000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": true,
+    "minimum_disability_percentage": 40,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 30
+    },
+    "documents_required": [
+      "Valid Disability Certificate issued by Competent Central/State Medical Authority (min 40%)",
+      "Admission letter from AICTE approved institute",
+      "Family Annual Income Certificate (< ₹8 Lakh)",
+      "10th, 12th or qualifying degree marksheet",
+      "Student Bank Account linked with Aadhaar",
+      "Bonafide certificate issued by Principal"
+    ],
+    "deadline": "2026-11-30",
+    "official_url": "https://scholarships.gov.in",
+    "application_url": "https://scholarships.gov.in",
+    "source_url": "https://www.aicte-india.org/schemes/students-development-schemes/Saksham-Scholarship-Scheme",
+    "last_verified": "2026-08-25",
+    "active": true,
+    "ml_target_key": "target_saksham",
+    "tags": [
+      "Government",
+      "Disability / PwD",
+      "National Scholarship Portal",
+      "AICTE"
+    ]
+  },
+  {
+    "id": "aicte_pragati",
+    "name": "AICTE Pragati Scholarship Scheme for Girl Students",
+    "provider": "Ministry of Education & AICTE, Government of India",
+    "description": "Empowering girl students across India admitted to 1st year or 2nd year (lateral entry) degree level technical programs in AICTE approved institutions.",
+    "maximum_amount": 50000,
+    "benefit_type": "₹50,000 per annum for entire duration of degree",
+    "eligible_gender": [
+      "Female"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "minimum_cgpa": 5.5,
+    "minimum_percentage": 55.0,
+    "maximum_family_income": 800000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 25
+    },
+    "documents_required": [
+      "10th and 12th marksheets",
+      "Admission proof to AICTE approved technical program",
+      "Family income certificate issued by competent authority (< ₹8 Lakhs)",
+      "Aadhaar card",
+      "Aadhaar-seeded bank account passbook copy"
+    ],
+    "deadline": "2026-11-30",
+    "official_url": "https://scholarships.gov.in",
+    "application_url": "https://scholarships.gov.in",
+    "source_url": "https://www.aicte-india.org/schemes/students-development-schemes/Pragati-Scholarship-Scheme",
+    "last_verified": "2026-08-25",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Government",
+      "Women in STEM",
+      "National Scholarship Portal",
+      "AICTE"
+    ]
+  },
+  {
+    "id": "cybage_khushboo",
+    "name": "Cybage Khushboo Charitable Trust Scholarship",
+    "provider": "Cybage Khushboo Trust",
+    "description": "Comprehensive scholarship covering educational expenses for brilliant and economically underprivileged students pursuing professional degrees in engineering, medicine, and management in Pune and nearby regions.",
+    "maximum_amount": 60000,
+    "benefit_type": "Full or Partial College Tuition Fees Support",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Electronics & Telecommunication",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Civil Engineering"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "minimum_cgpa": 6.0,
+    "minimum_percentage": 60.0,
+    "maximum_family_income": 300000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "Maharashtra",
+      "Other"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 24
+    },
+    "documents_required": [
+      "10th & 12th standard marksheets (minimum 60%)",
+      "CAP allotment letter and college fee structure",
+      "Valid Income certificate from Tahashildar (< ₹3 Lakh)",
+      "Ration card and electricity bill copy",
+      "Bank passbook copy"
+    ],
+    "deadline": "2026-09-20",
+    "official_url": "https://www.cybagekhushboo.org",
+    "application_url": "https://www.cybagekhushboo.org/apply-for-scholarship/",
+    "source_url": "https://www.cybagekhushboo.org",
+    "last_verified": "2026-08-10",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Engineering",
+      "Maharashtra",
+      "Merit-cum-Means",
+      "CSR"
+    ]
+  },
+  {
+    "id": "colgate_keep_india_smiling",
+    "name": "Colgate Keep India Smiling Foundational Scholarship",
+    "provider": "Colgate-Palmolive (India) Limited",
+    "description": "Financial assistance to deserving students pursuing engineering or vocational courses across India who lack financial resources to continue their higher studies.",
+    "maximum_amount": 30000,
+    "benefit_type": "₹30,000 per annum for up to 4 years",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "minimum_cgpa": 6.0,
+    "minimum_percentage": 60.0,
+    "maximum_family_income": 500000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 24
+    },
+    "documents_required": [
+      "12th board marksheet (min 60%)",
+      "Income proof (ITR / BPL / Salary Slip / Income Certificate)",
+      "College admission confirmation letter",
+      "Identity card & Address proof"
+    ],
+    "deadline": "2026-10-31",
+    "official_url": "https://www.colgate.com/en-in/about/community-programs/keep-india-smiling",
+    "application_url": "https://www.colgate.com/en-in/about/community-programs/keep-india-smiling",
+    "source_url": "https://www.colgate.com/en-in",
+    "last_verified": "2026-08-12",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Pan-India",
+      "First Year Only",
+      "Merit-cum-Means"
+    ]
+  },
+  {
+    "id": "kiran_girls",
+    "name": "Kiran Girls Scholarship Program",
+    "provider": "Persistent Foundation",
+    "description": "Supports economically disadvantaged and meritorious girl students pursuing B.E. / B.Tech in Computer Science, IT, and related engineering disciplines in Maharashtra, Karnataka, and Goa.",
+    "maximum_amount": 40000,
+    "benefit_type": "₹40,000 per year + Mentorship + Soft Skill Training",
+    "eligible_gender": [
+      "Female"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Electronics & Telecommunication"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "minimum_cgpa": 6.5,
+    "minimum_percentage": 70.0,
+    "maximum_family_income": 300000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "Maharashtra",
+      "Karnataka",
+      "Other"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 23
+    },
+    "documents_required": [
+      "10th & 12th marksheets with minimum 70% marks",
+      "Family income certificate (< ₹3 Lakhs)",
+      "First / Second year engineering fee receipt",
+      "Aadhaar card",
+      "Bank passbook copy"
+    ],
+    "deadline": "2026-09-30",
+    "official_url": "https://www.persistentfoundation.org",
+    "application_url": "https://www.persistentfoundation.org/initiatives/education/kiran-girls-scholarship/",
+    "source_url": "https://www.persistentfoundation.org",
+    "last_verified": "2026-08-15",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Women in STEM",
+      "Computer Science",
+      "Mentorship"
+    ]
+  },
+  {
+    "id": "queens_scholarship",
+    "name": "Queen's Engineering Excellence Scholarship",
+    "provider": "Queen's Educational Trust",
+    "description": "Prestigious merit-based award recognizing outstanding academic performance and leadership potential among undergraduate engineering students.",
+    "maximum_amount": 50000,
+    "benefit_type": "One-time Merit Grant + Certificate of Excellence",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Electronics & Telecommunication",
+      "Civil Engineering"
+    ],
+    "eligible_years": [
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": 8.5,
+    "minimum_percentage": 80.0,
+    "maximum_family_income": null,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 18,
+      "max": 25
+    },
+    "documents_required": [
+      "University engineering grade cards / transcripts (min 8.5 CGPA)",
+      "Recommendation letter from Department Head",
+      "Extracurricular / Technical achievements certificate",
+      "College bonafide certificate"
+    ],
+    "deadline": "2026-10-15",
+    "official_url": null,
+    "application_url": null,
+    "source_url": null,
+    "last_verified": "2026-08-01",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Pure Merit",
+      "High CGPA",
+      "Engineering"
+    ]
+  },
+  {
+    "id": "ffe",
+    "name": "Foundation For Excellence (FFE) Engineering Scholarship",
+    "provider": "Foundation For Excellence India Trust",
+    "description": "Provides financial assistance to exceptionally bright students from financially constrained backgrounds enrolled in 1st year B.E. / B.Tech across India.",
+    "maximum_amount": 50000,
+    "benefit_type": "₹50,000 per year + Laptop support + Skill training",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Electronics & Telecommunication",
+      "Civil Engineering"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "minimum_cgpa": 7.0,
+    "minimum_percentage": 70.0,
+    "maximum_family_income": 300000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 23
+    },
+    "documents_required": [
+      "12th standard marksheet (min 70%) and Rank certificate",
+      "Entrance exam scorecard (JEE / State CET)",
+      "Official salary slips / Revenue officer income certificate",
+      "Fee receipt and College ID card"
+    ],
+    "deadline": "2026-11-15",
+    "official_url": "https://ffe.org",
+    "application_url": "https://ffe.org/scholarships/",
+    "source_url": "https://ffe.org",
+    "last_verified": "2026-08-20",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Engineering",
+      "First Year Only",
+      "Pan-India",
+      "Skill Building"
+    ]
+  },
+  {
+    "id": "ieee_wie",
+    "name": "IEEE Women in Engineering (WIE) Scholarship",
+    "provider": "IEEE Women in Engineering & IEEE Pune Section",
+    "description": "Merit and interest award for female student members of IEEE pursuing degrees in Electrical, Electronics, CS, and IT with demonstrated interest in research and innovation.",
+    "maximum_amount": 35000,
+    "benefit_type": "Financial Grant + IEEE Membership Sponsorship + Research Mentorship",
+    "eligible_gender": [
+      "Female"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Electrical Engineering",
+      "Electronics & Telecommunication"
+    ],
+    "eligible_years": [
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": 7.5,
+    "minimum_percentage": 70.0,
+    "maximum_family_income": 800000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 18,
+      "max": 25
+    },
+    "documents_required": [
+      "Semester marksheets showing min 7.5 CGPA",
+      "IEEE Student Membership ID or proof of participation in IEEE events",
+      "Statement of research interest / Project abstract",
+      "Faculty recommendation"
+    ],
+    "deadline": "2026-10-31",
+    "official_url": "https://wie.ieee.org",
+    "application_url": "https://wie.ieee.org/membership/scholarships-awards/",
+    "source_url": "https://wie.ieee.org",
+    "last_verified": "2026-08-16",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Women in STEM",
+      "IEEE",
+      "Research & Innovation"
+    ]
+  },
+  {
+    "id": "sitaram_jindal",
+    "name": "Sitaram Jindal Foundation Scholarship",
+    "provider": "Sitaram Jindal Foundation",
+    "description": "One of India's oldest philanthropic scholarships providing monthly stipends and annual aid to underprivileged meritorious students pursuing technical degrees.",
+    "maximum_amount": 28800,
+    "benefit_type": "₹2,400 monthly stipend for engineering students",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": 6.0,
+    "minimum_percentage": 65.0,
+    "maximum_family_income": 400000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 26
+    },
+    "documents_required": [
+      "Previous year marksheet (min 65% for boys, 60% for girls)",
+      "Income certificate from authorized revenue authority",
+      "College fees structure and bonafide certificate",
+      "Hostel warden certificate (if applicable for extra allowance)"
+    ],
+    "deadline": "2026-12-31",
+    "official_url": "https://www.sitaramjindalfoundation.org",
+    "application_url": "https://www.sitaramjindalfoundation.org/scholarships.php",
+    "source_url": "https://www.sitaramjindalfoundation.org",
+    "last_verified": "2026-08-18",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "All Branches",
+      "All Years",
+      "Monthly Stipend",
+      "Pan-India"
+    ]
+  },
+  {
+    "id": "hdfc_ecss",
+    "name": "HDFC Bank Parivartan's ECSS Programme",
+    "provider": "HDFC Bank CSR",
+    "description": "Educational Crisis Support Scholarship (ECSS) designed to support students facing critical personal or financial emergencies who are at risk of dropping out.",
+    "maximum_amount": 75000,
+    "benefit_type": "Up to ₹75,000 for undergraduate general and professional courses",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": 5.5,
+    "minimum_percentage": 55.0,
+    "maximum_family_income": 250000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 26
+    },
+    "documents_required": [
+      "Previous academic marksheet (min 55%)",
+      "Proof of family income (< ₹2.5 Lakhs) or crisis document",
+      "Current year college fee receipt",
+      "Aadhaar card & Bank passbook"
+    ],
+    "deadline": "2026-10-15",
+    "official_url": "https://www.hdfcbank.com/personal/about-us/corporate-social-responsibility",
+    "application_url": "https://www.hdfcbank.com/personal/about-us/corporate-social-responsibility",
+    "source_url": "https://www.hdfcbank.com",
+    "last_verified": "2026-08-20",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Crisis Support",
+      "Need Based",
+      "Low Income",
+      "All Branches"
+    ]
+  },
+  {
+    "id": "swami_dayanand",
+    "name": "Swami Dayanand Education Foundation Merit-cum-Means Scholarship",
+    "provider": "Swami Dayanand Education Foundation",
+    "description": "Offers scholarships to bright students pursuing professional courses (Engineering, IT, Architecture, Medicine) in government and private colleges in India.",
+    "maximum_amount": 50000,
+    "benefit_type": "₹20,000 to ₹50,000 based on financial need and merit tier",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Electronics & Telecommunication",
+      "Civil Engineering"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "minimum_cgpa": 7.5,
+    "minimum_percentage": 75.0,
+    "maximum_family_income": 600000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 24
+    },
+    "documents_required": [
+      "10th and 12th marksheets (min 75%)",
+      "JEE / CET rank proof",
+      "Family income certificate / Form 16 / ITR",
+      "College bonafide & Fee payment receipt"
+    ],
+    "deadline": "2026-11-10",
+    "official_url": "https://www.swamidayanand.org",
+    "application_url": "https://www.swamidayanand.org/scholarship-india",
+    "source_url": "https://www.swamidayanand.org",
+    "last_verified": "2026-08-14",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Engineering",
+      "Merit-cum-Means",
+      "Pan-India"
+    ]
+  },
+  {
+    "id": "yashad_sumedha",
+    "name": "Yashad-Sumedha Scholarship",
+    "provider": "Hindustan Zinc Limited & Sumedha Foundation",
+    "description": "Joint initiative providing educational financial assistance to meritorious youth from economically weaker sections pursuing diploma and degree engineering.",
+    "maximum_amount": 25000,
+    "benefit_type": "₹20,000 to ₹25,000 per academic year",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "Civil Engineering",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Electronics & Telecommunication",
+      "Computer Engineering",
+      "Information Technology"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "minimum_cgpa": 6.5,
+    "minimum_percentage": 75.0,
+    "maximum_family_income": 250000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 22
+    },
+    "documents_required": [
+      "10th and 12th standard marksheets (min 75%)",
+      "Income certificate verified by Tehsildar",
+      "College admission letter & Fee receipt",
+      "Identity Proof and Photo"
+    ],
+    "deadline": "2026-10-20",
+    "official_url": "https://sumedha.org",
+    "application_url": "https://sumedha.org/scholarship-programs/",
+    "source_url": "https://sumedha.org",
+    "last_verified": "2026-08-10",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "First Year Only",
+      "Engineering",
+      "Merit-cum-Means"
+    ]
+  },
+  {
+    "id": "nse_india",
+    "name": "National Scholarship Exam (NSE) Merit Award",
+    "provider": "National Institute of Career Education (NICE)",
+    "description": "All-India competitive examination granting cash awards and educational scholarships to school and college students based purely on talent and examination rank.",
+    "maximum_amount": 35000,
+    "benefit_type": "Cash Scholarship & Certificate of National Merit",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": null,
+    "minimum_percentage": 50.0,
+    "maximum_family_income": null,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 16,
+      "max": 28
+    },
+    "documents_required": [
+      "NSE Exam Registration ID and Scorecard",
+      "Student College ID Card",
+      "Government Photo ID",
+      "Bank account passbook"
+    ],
+    "deadline": "2026-11-25",
+    "official_url": "https://www.niceedu.org",
+    "application_url": "https://www.niceedu.org/nse",
+    "source_url": "https://www.niceedu.org",
+    "last_verified": "2026-08-17",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Competition Exam",
+      "Pan-India",
+      "Open Income",
+      "All Years"
+    ]
+  },
+  {
+    "id": "op_jindal_engineering",
+    "name": "OP Jindal Engineering & Management Scholarship (OPJEMS)",
+    "provider": "Jindal Steel and Power Limited",
+    "description": "Fosters entrepreneurial leadership by rewarding top engineering and management students in premier institutes across India based on an online test and interview.",
+    "maximum_amount": 80000,
+    "benefit_type": "₹80,000 annual scholarship + OPJEMS Scholar Medallion",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Civil Engineering",
+      "Computer Engineering",
+      "Information Technology",
+      "Electronics & Telecommunication"
+    ],
+    "eligible_years": [
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": 7.5,
+    "minimum_percentage": 75.0,
+    "maximum_family_income": null,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 18,
+      "max": 25
+    },
+    "documents_required": [
+      "Previous semester marksheets with top class rank",
+      "College nomination form",
+      "Student identity card",
+      "Resume and achievement certificates"
+    ],
+    "deadline": "2026-10-05",
+    "official_url": "https://www.opjems.com",
+    "application_url": "https://www.opjems.com",
+    "source_url": "https://www.opjems.com",
+    "last_verified": "2026-08-20",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Leadership",
+      "Merit Based",
+      "Engineering",
+      "High Value"
+    ]
+  },
+  {
+    "id": "m_scholarship",
+    "name": "M-Scholarship for Higher Education",
+    "provider": "Magma Fincorp CSR",
+    "description": "Financial support to bright students from low-income families enrolled in recognized degree programs in engineering, general sciences, and commerce.",
+    "maximum_amount": 20000,
+    "benefit_type": "₹20,000 per year renewable annually",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "minimum_cgpa": 6.5,
+    "minimum_percentage": 70.0,
+    "maximum_family_income": 200000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 22
+    },
+    "documents_required": [
+      "12th standard marksheet (min 70%)",
+      "Family income certificate (< ₹2 Lakhs)",
+      "College admission confirmation & fee receipt",
+      "Aadhaar card"
+    ],
+    "deadline": "2026-10-31",
+    "official_url": null,
+    "application_url": null,
+    "source_url": null,
+    "last_verified": "2026-08-01",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "First Year Only",
+      "Need Based",
+      "Low Income"
+    ]
+  },
+  {
+    "id": "jspn",
+    "name": "JSPN Educational Scholarship Scheme",
+    "provider": "Jaya Satya Pramoda Nidhi (JSPN)",
+    "description": "Educational grant providing financial aid to needy students pursuing technical, medical, and higher education degree courses.",
+    "maximum_amount": 25000,
+    "benefit_type": "Direct tuition fee grant",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": 6.0,
+    "minimum_percentage": 60.0,
+    "maximum_family_income": 300000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "Karnataka",
+      "Maharashtra",
+      "Other"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 26
+    },
+    "documents_required": [
+      "Previous qualifying marksheet",
+      "Income certificate / proof",
+      "College Bonafide and fee structure",
+      "Aadhaar card copy"
+    ],
+    "deadline": "2026-10-15",
+    "official_url": "https://www.srijspn.org",
+    "application_url": "https://www.srijspn.org/jspn/jspn_appln_details.php",
+    "source_url": "https://www.srijspn.org",
+    "last_verified": "2026-08-11",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Tuition Grant",
+      "Need Based"
+    ]
+  },
+  {
+    "id": "padala_charitable_trust",
+    "name": "Padala Charitable Trust Higher Education Scholarship",
+    "provider": "Padala Charitable Trust",
+    "description": "Supports economically disadvantaged students pursuing professional engineering and degree programs with full or partial tuition fees.",
+    "maximum_amount": 30000,
+    "benefit_type": "Annual College Fee Reimbursement & Mentorship",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3
+    ],
+    "minimum_cgpa": 6.5,
+    "minimum_percentage": 65.0,
+    "maximum_family_income": 200000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 24
+    },
+    "documents_required": [
+      "Marksheets from 10th standard onwards",
+      "Government authorized income certificate (< ₹2 Lakhs)",
+      "College admission letter & Identity proof",
+      "Bank passbook copy"
+    ],
+    "deadline": "2026-09-30",
+    "official_url": "https://padala.org",
+    "application_url": "https://padala.org/scholarships/",
+    "source_url": "https://padala.org",
+    "last_verified": "2026-08-15",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Need Based",
+      "Low Income",
+      "All Branches"
+    ]
+  },
+  {
+    "id": "rajarshi_shahu_maharaj",
+    "name": "Rajarshi Chhatrapati Shahu Maharaj Shikshan Shulkh Shishyavrutti Yojna (EBC)",
+    "provider": "Government of Maharashtra (MahaDBT)",
+    "description": "Flagship government scheme providing 50% tuition and exam fee reimbursement to Economically Backward Class (EBC) students in recognized higher education courses in Maharashtra.",
+    "maximum_amount": 75000,
+    "benefit_type": "50% Tuition Fee and Exam Fee Reimbursement",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": 5.0,
+    "minimum_percentage": 50.0,
+    "maximum_family_income": 800000,
+    "eligible_categories": [
+      "General",
+      "OBC"
+    ],
+    "domicile_requirement": [
+      "Maharashtra"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 30
+    },
+    "documents_required": [
+      "Domicile Certificate of Maharashtra",
+      "Income Certificate issued by Tahasildar (less than ₹8 Lakhs)",
+      "CAP Allotment Letter",
+      "Previous Year Marksheets",
+      "Aadhaar linked Bank Account details",
+      "Ration Card copy"
+    ],
+    "deadline": "2026-12-31",
+    "official_url": "https://mahadbt.maharashtra.gov.in",
+    "application_url": "https://mahadbt.maharashtra.gov.in/SchemeData/SchemeData?str=E9DDFA703C38E51A4D0E76840EB0D695",
+    "source_url": "https://mahadbt.maharashtra.gov.in",
+    "last_verified": "2026-08-25",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Government",
+      "Maharashtra Domicile",
+      "MahaDBT",
+      "Fee Reimbursement"
+    ]
+  },
+  {
+    "id": "glow_and_lovely",
+    "name": "Glow & Lovely Careers Foundation Scholarship",
+    "provider": "Hindustan Unilever Limited",
+    "description": "Financial scholarship to meritorious young women seeking higher education in undergraduate and postgraduate professional courses across India.",
+    "maximum_amount": 30000,
+    "benefit_type": "₹25,000 to ₹30,000 annual education grant",
+    "eligible_gender": [
+      "Female"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": 6.0,
+    "minimum_percentage": 60.0,
+    "maximum_family_income": 600000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 18,
+      "max": 30
+    },
+    "documents_required": [
+      "10th and 12th standard marksheets (min 60%)",
+      "College admission letter & Fee receipt",
+      "Income proof (Salary slip / Income certificate / BPL card)",
+      "Photo ID and address proof"
+    ],
+    "deadline": "2026-10-31",
+    "official_url": "https://www.glowandlovelycareers.in",
+    "application_url": "https://www.glowandlovelycareers.in/en/scholarships",
+    "source_url": "https://www.glowandlovelycareers.in",
+    "last_verified": "2026-08-15",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Women Empowerment",
+      "Pan-India",
+      "All Branches"
+    ]
+  },
+  {
+    "id": "loreal_young_women",
+    "name": "L'Oréal India For Young Women in Science Scholarship",
+    "provider": "L'Oréal India Foundation",
+    "description": "Awarded to promising young women from economically disadvantaged backgrounds who wish to pursue higher education in scientific and engineering fields.",
+    "maximum_amount": 250000,
+    "benefit_type": "₹2,50,000 total grant distributed across graduation years",
+    "eligible_gender": [
+      "Female"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Electronics & Telecommunication",
+      "Civil Engineering"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "minimum_cgpa": 8.0,
+    "minimum_percentage": 85.0,
+    "maximum_family_income": 600000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 20
+    },
+    "documents_required": [
+      "Class 12th marksheet in Science stream (min 85% in PCB/PCM)",
+      "Family income proof (< ₹6 Lakhs)",
+      "College admission confirmation letter",
+      "Age proof and Photo ID"
+    ],
+    "deadline": "2026-09-30",
+    "official_url": "https://www.loreal.com/en/india/articles/commitments/for-young-women-in-science-programme/",
+    "application_url": "https://www.loreal.com/en/india/articles/commitments/for-young-women-in-science-programme/",
+    "source_url": "https://www.loreal.com/en/india/",
+    "last_verified": "2026-08-18",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Women in STEM",
+      "High Value",
+      "First Year Only",
+      "Science & Tech"
+    ]
+  },
+  {
+    "id": "ugam_legrand",
+    "name": "UGAM – Legrand Empowering Scholarship Program",
+    "provider": "Legrand India CSR",
+    "description": "Encouraging meritorious girl students, differently-abled students, and transgender students pursuing B.Tech/B.E. engineering degrees across India.",
+    "maximum_amount": 60000,
+    "benefit_type": "60% of annual tuition fee or up to ₹60,000 per year",
+    "eligible_gender": [
+      "Female",
+      "Other"
+    ],
+    "eligible_branches": [
+      "Electrical Engineering",
+      "Electronics & Telecommunication",
+      "Computer Engineering",
+      "Information Technology",
+      "Mechanical Engineering",
+      "Civil Engineering"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "minimum_cgpa": 7.0,
+    "minimum_percentage": 70.0,
+    "maximum_family_income": 500000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 23
+    },
+    "documents_required": [
+      "10th & 12th standard marksheets (min 70%)",
+      "Valid Income proof (< ₹5 Lakhs)",
+      "College admission proof & fee structure",
+      "Aadhaar card and Bank account details"
+    ],
+    "deadline": "2026-10-15",
+    "official_url": "https://www.legrand.co.in",
+    "application_url": "https://www.legrand.co.in/csr-initiatives/education",
+    "source_url": "https://www.legrand.co.in",
+    "last_verified": "2026-08-14",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Women in STEM",
+      "Engineering",
+      "First Year Only",
+      "Diversity"
+    ]
+  },
+  {
+    "id": "indous_women_stemm",
+    "name": "Indo-U.S. Fellowship for Women in STEMM",
+    "provider": "Department of Science and Technology (DST) & IUSSTF",
+    "description": "Prestigious research opportunity and fellowship for Indian women in STEMM to undergo research training and collaborative research in leading US institutions.",
+    "maximum_amount": 200000,
+    "benefit_type": "Monthly Stipend, Travel Grant & Health Insurance for US Visit",
+    "eligible_gender": [
+      "Female"
+    ],
+    "eligible_branches": [
+      "Computer Engineering",
+      "Information Technology",
+      "Electronics & Telecommunication",
+      "Electrical Engineering",
+      "Mechanical Engineering"
+    ],
+    "eligible_years": [
+      4
+    ],
+    "minimum_cgpa": 8.0,
+    "minimum_percentage": 75.0,
+    "maximum_family_income": null,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 20,
+      "max": 35
+    },
+    "documents_required": [
+      "Undergraduate / Research Transcripts (min 8.0 CGPA)",
+      "Research Proposal in STEMM field",
+      "Curriculum Vitae and publication list",
+      "Recommendation letters from department professors"
+    ],
+    "deadline": "2026-11-30",
+    "official_url": "https://iusstf.org",
+    "application_url": "https://iusstf.org/program/women-in-stemm-fellowship",
+    "source_url": "https://iusstf.org",
+    "last_verified": "2026-08-20",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Women in STEM",
+      "Research",
+      "International",
+      "Final Year"
+    ]
+  },
+  {
+    "id": "rmd_foundation",
+    "name": "RMD Foundation Educational Scholarship",
+    "provider": "Rasiklal M. Dhariwal Foundation",
+    "description": "Financial assistance to underprivileged and deserving students from Maharashtra pursuing technical diploma and engineering degree education.",
+    "maximum_amount": 35000,
+    "benefit_type": "Direct Tuition Assistance",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": 6.0,
+    "minimum_percentage": 60.0,
+    "maximum_family_income": 300000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "Maharashtra"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 25
+    },
+    "documents_required": [
+      "10th, 12th / Diploma marksheets",
+      "Maharashtra Domicile Certificate",
+      "Family income certificate (< ₹3 Lakhs)",
+      "College admission receipt"
+    ],
+    "deadline": "2026-10-31",
+    "official_url": null,
+    "application_url": null,
+    "source_url": null,
+    "last_verified": "2026-08-01",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Maharashtra Domicile",
+      "Need Based",
+      "All Branches"
+    ]
+  },
+  {
+    "id": "disha_parivar",
+    "name": "Disha Parivar Public Trust Scholarship",
+    "provider": "Disha Parivar Trust",
+    "description": "Community-driven educational scholarship supporting bright students from rural and economically challenged families in Maharashtra.",
+    "maximum_amount": 25000,
+    "benefit_type": "Educational Grant and Book Bank Assistance",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": 6.0,
+    "minimum_percentage": 60.0,
+    "maximum_family_income": 250000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "Maharashtra"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 25
+    },
+    "documents_required": [
+      "Academic marksheets",
+      "Income certificate from Village Officer / Tahasildar",
+      "College bonafide certificate",
+      "Aadhaar card"
+    ],
+    "deadline": "2026-10-15",
+    "official_url": null,
+    "application_url": null,
+    "source_url": null,
+    "last_verified": "2026-08-01",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Maharashtra Domicile",
+      "Rural Support",
+      "Need Based"
+    ]
+  },
+  {
+    "id": "iocl_merit",
+    "name": "Indian Oil Educational Scholarship Scheme",
+    "provider": "Indian Oil Corporation Limited (IOCL)",
+    "description": "Awarded to 1st year full-time engineering students in recognized colleges on merit-cum-means basis across India with reserved quotas for SC/ST and OBC.",
+    "maximum_amount": 36000,
+    "benefit_type": "₹3,000 per month (₹36,000 per annum) for 4 years",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "Civil Engineering",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+      "Computer Engineering",
+      "Information Technology",
+      "Electronics & Telecommunication"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "minimum_cgpa": 6.5,
+    "minimum_percentage": 65.0,
+    "maximum_family_income": 400000,
+    "eligible_categories": [
+      "General",
+      "OBC",
+      "SC",
+      "ST"
+    ],
+    "domicile_requirement": [
+      "All"
+    ],
+    "hostel_requirement": null,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 24
+    },
+    "documents_required": [
+      "12th Standard marksheet (min 65% for Gen/OBC, 60% for SC/ST)",
+      "Family income certificate (< ₹4 Lakhs)",
+      "College admission letter & bonafide certificate",
+      "Caste Certificate (if SC/ST/OBC)"
+    ],
+    "deadline": "2026-10-25",
+    "official_url": "https://iocl.com",
+    "application_url": "https://iocl.com/scholarships",
+    "source_url": "https://iocl.com",
+    "last_verified": "2026-08-16",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "PSU",
+      "First Year Only",
+      "Monthly Stipend",
+      "Engineering"
+    ]
+  },
+  {
+    "id": "panjabrao_deshmukh",
+    "name": "Dr. Panjabrao Deshmukh Vastigruh Nirvah Bhatta Yojna (Hostel Allowance)",
+    "provider": "Government of Maharashtra (MahaDBT)",
+    "description": "Special government hostel maintenance allowance scheme for children of registered marginal farmers and registered workers residing in hostels while pursuing professional engineering and higher technical courses.",
+    "maximum_amount": 30000,
+    "benefit_type": "₹20,000 to ₹30,000 per annum Hostel Maintenance Allowance",
+    "eligible_gender": [
+      "Female",
+      "Male",
+      "Other"
+    ],
+    "eligible_branches": [
+      "All"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "minimum_cgpa": 5.0,
+    "minimum_percentage": 50.0,
+    "maximum_family_income": 800000,
+    "eligible_categories": [
+      "General",
+      "OBC"
+    ],
+    "domicile_requirement": [
+      "Maharashtra"
+    ],
+    "hostel_requirement": true,
+    "disability_requirement": null,
+    "minimum_disability_percentage": null,
+    "bpl_requirement": null,
+    "age_requirement": {
+      "min": 17,
+      "max": 30
+    },
+    "documents_required": [
+      "Maharashtra Domicile Certificate",
+      "Hostel Admission Proof / Hostel Warden Certificate / Rent Agreement",
+      "Alpabhudharak Shetkari Certificate (Marginal Farmer Proof) or Registered Labor Certificate",
+      "Family Income Certificate (< ₹8 Lakhs)",
+      "CAP Allotment Letter and College Bonafide",
+      "Aadhaar-seeded Bank Passbook"
+    ],
+    "deadline": "2026-12-31",
+    "official_url": "https://mahadbt.maharashtra.gov.in",
+    "application_url": "https://mahadbt.maharashtra.gov.in/SchemeData/SchemeData?str=E9DDFA703C38E51A4D0E76840EB0D695",
+    "source_url": "https://mahadbt.maharashtra.gov.in",
+    "last_verified": "2026-08-25",
+    "active": true,
+    "ml_target_key": null,
+    "tags": [
+      "Government",
+      "Hostel Specific",
+      "Maharashtra Domicile",
+      "MahaDBT"
+    ]
+  }
+]

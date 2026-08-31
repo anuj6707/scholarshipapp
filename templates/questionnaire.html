@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+
+{% block title %}Scholarship Questionnaire | ScholarMatch{% endblock %}
+
+{% block content %}
+<div class="container section-py">
+  <div class="wizard-container">
+    <!-- Wizard Header -->
+    <div class="wizard-header">
+      <h1 class="wizard-title">Student Profile Questionnaire</h1>
+      <p class="wizard-subtitle">
+        Enter your academic and personal background to find verified scholarships you qualify for.
+      </p>
+    </div>
+
+    <!-- Stepper Progress Bar -->
+    <div class="stepper">
+      <div class="step-item active" data-step="1">
+        <div class="step-circle">1</div>
+        <span class="step-label">Basic Info</span>
+      </div>
+      <div class="step-item" data-step="2">
+        <div class="step-circle">2</div>
+        <span class="step-label">Academics</span>
+      </div>
+      <div class="step-item" data-step="3">
+        <div class="step-circle">3</div>
+        <span class="step-label">Financials</span>
+      </div>
+      <div class="step-item" data-step="4">
+        <div class="step-circle">4</div>
+        <span class="step-label">Category & PwD</span>
+      </div>
+      <div class="step-item" data-step="5">
+        <div class="step-circle">5</div>
+        <span class="step-label">Review & Submit</span>
+      </div>
+    </div>
+
+    <!-- Form Wizard Body -->
+    <div class="wizard-body">
+      <form id="questionnaire-form" action="{{ url_for('recommend') }}" method="POST" novalidate>
+        
+        <!-- STEP 1: Basic Information -->
+        <div class="form-step active" data-step="1">
+          <h2 class="form-step-title">Step 1: Basic Information</h2>
+          <p class="form-step-desc">Tell us about your gender, age, and state domicile.</p>
+
+          <div class="form-grid">
+            <!-- Gender -->
+            <div class="form-group col-span-2">
+              <label class="form-label">Gender <span class="required">*</span></label>
+              <div class="radio-pill-group">
+                <div class="radio-pill">
+                  <input type="radio" id="gender-female" name="gender" value="Female" {% if profile.get('gender') == 'Female' %}checked{% endif %} required>
+                  <label for="gender-female">Female</label>
+                </div>
+                <div class="radio-pill">
+                  <input type="radio" id="gender-male" name="gender" value="Male" {% if profile.get('gender') == 'Male' %}checked{% endif %}>
+                  <label for="gender-male">Male</label>
+                </div>
+                <div class="radio-pill">
+                  <input type="radio" id="gender-other" name="gender" value="Other" {% if profile.get('gender') == 'Other' %}checked{% endif %}>
+                  <label for="gender-other">Other</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Age -->
+            <div class="form-group">
+              <label for="age" class="form-label">Age (in years) <span class="required">*</span></label>
+              <input type="number" id="age" name="age" class="form-control" placeholder="e.g. 19" min="15" max="60" value="{{ profile.get('age', '') }}" required>
+              <span class="form-help">Must be between 15 and 60.</span>
+            </div>
+
+            <!-- Domicile -->
+            <div class="form-group">
+              <label for="domicile" class="form-label">State Domicile <span class="required">*</span></label>
+              <select id="domicile" name="domicile" class="form-control" required>
+                <option value="" disabled {% if not profile.get('domicile') %}selected{% endif %}>Select Domicile State</option>
+                <option value="Maharashtra" {% if profile.get('domicile') == 'Maharashtra' %}selected{% endif %}>Maharashtra</option>
+                <option value="Delhi" {% if profile.get('domicile') == 'Delhi' %}selected{% endif %}>Delhi</option>
+                <option value="Gujarat" {% if profile.get('domicile') == 'Gujarat' %}selected{% endif %}>Gujarat</option>
+                <option value="Karnataka" {% if profile.get('domicile') == 'Karnataka' %}selected{% endif %}>Karnataka</option>
+                <option value="Other" {% if profile.get('domicile') == 'Other' %}selected{% endif %}>Other State</option>
+              </select>
+              <span class="form-help">State of permanent residence.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Academic Information -->
+        <div class="form-step" data-step="2">
+          <h2 class="form-step-title">Step 2: Academic Information</h2>
+          <p class="form-step-desc">Enter details about your engineering branch, year of study, and academic scores.</p>
+
+          <div class="form-grid">
+            <!-- Branch -->
+            <div class="form-group col-span-2">
+              <label for="branch" class="form-label">Engineering Branch <span class="required">*</span></label>
+              <select id="branch" name="branch" class="form-control" required>
+                <option value="" disabled {% if not profile.get('branch') %}selected{% endif %}>Select Engineering Branch</option>
+                <option value="Computer Engineering" {% if profile.get('branch') == 'Computer Engineering' %}selected{% endif %}>Computer Engineering</option>
+                <option value="Information Technology" {% if profile.get('branch') == 'Information Technology' %}selected{% endif %}>Information Technology</option>
+                <option value="Electronics & Telecommunication" {% if profile.get('branch') == 'Electronics & Telecommunication' %}selected{% endif %}>Electronics & Telecommunication</option>
+                <option value="Electrical Engineering" {% if profile.get('branch') == 'Electrical Engineering' %}selected{% endif %}>Electrical Engineering</option>
+                <option value="Mechanical Engineering" {% if profile.get('branch') == 'Mechanical Engineering' %}selected{% endif %}>Mechanical Engineering</option>
+                <option value="Civil Engineering" {% if profile.get('branch') == 'Civil Engineering' %}selected{% endif %}>Civil Engineering</option>
+              </select>
+            </div>
+
+            <!-- Year of Study -->
+            <div class="form-group col-span-2">
+              <label class="form-label">Current Academic Year <span class="required">*</span></label>
+              <div class="radio-pill-group">
+                <div class="radio-pill">
+                  <input type="radio" id="year-1" name="year" value="1" {% if profile.get('year') == 1 %}checked{% endif %} required>
+                  <label for="year-1">1st Year (FE)</label>
+                </div>
+                <div class="radio-pill">
+                  <input type="radio" id="year-2" name="year" value="2" {% if profile.get('year') == 2 %}checked{% endif %}>
+                  <label for="year-2">2nd Year (SE)</label>
+                </div>
+                <div class="radio-pill">
+                  <input type="radio" id="year-3" name="year" value="3" {% if profile.get('year') == 3 %}checked{% endif %}>
+                  <label for="year-3">3rd Year (TE)</label>
+                </div>
+                <div class="radio-pill">
+                  <input type="radio" id="year-4" name="year" value="4" {% if profile.get('year') == 4 %}checked{% endif %}>
+                  <label for="year-4">4th Year (BE)</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- CGPA -->
+            <div class="form-group">
+              <label for="cgpa" class="form-label">Current / Sem CGPA <span class="required">*</span></label>
+              <input type="number" id="cgpa" name="cgpa" class="form-control" placeholder="e.g. 8.45" step="0.01" min="0.0" max="10.0" value="{{ profile.get('cgpa', '') }}" required>
+              <span class="form-help">On a scale of 0.00 to 10.00.</span>
+            </div>
+
+            <!-- Percentage -->
+            <div class="form-group">
+              <label for="percentage" class="form-label">12th / Diploma % <span class="required">*</span></label>
+              <input type="number" id="percentage" name="percentage" class="form-control" placeholder="e.g. 85.50" step="0.01" min="0.0" max="100.0" value="{{ profile.get('percentage', '') }}" required>
+              <span class="form-help">Aggregate qualifying percentage.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Financial Information -->
+        <div class="form-step" data-step="3">
+          <h2 class="form-step-title">Step 3: Financial Background</h2>
+          <p class="form-step-desc">Many scholarships offer financial aid on a need-cum-merit basis.</p>
+
+          <div class="form-grid">
+            <!-- Family Income -->
+            <div class="form-group col-span-2">
+              <label for="family_income" class="form-label">Annual Family Income (in ₹) <span class="required">*</span></label>
+              <input type="number" id="family_income" name="family_income" class="form-control" placeholder="e.g. 350000" min="0" value="{{ profile.get('family_income', '') }}" required>
+              <span class="form-help">Total gross household income from all sources per annum.</span>
+            </div>
+
+            <!-- BPL Status -->
+            <div class="form-group col-span-2">
+              <label class="form-label">Do you possess a Below Poverty Line (BPL) Card? <span class="required">*</span></label>
+              <div class="radio-pill-group">
+                <div class="radio-pill">
+                  <input type="radio" id="bpl-no" name="bpl_status" value="No" {% if not profile.get('bpl_status') %}checked{% endif %} required>
+                  <label for="bpl-no">No</label>
+                </div>
+                <div class="radio-pill">
+                  <input type="radio" id="bpl-yes" name="bpl_status" value="Yes" {% if profile.get('bpl_status') %}checked{% endif %}>
+                  <label for="bpl-yes">Yes (BPL Cardholder)</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: Category & Additional Information -->
+        <div class="form-step" data-step="4">
+          <h2 class="form-step-title">Step 4: Category & Specially-Abled (PwD)</h2>
+          <p class="form-step-desc">Government and affirmative action scholarships require social category verification.</p>
+
+          <div class="form-grid">
+            <!-- Social Category -->
+            <div class="form-group col-span-2">
+              <label for="category" class="form-label">Social Category <span class="required">*</span></label>
+              <select id="category" name="category" class="form-control" required>
+                <option value="" disabled {% if not profile.get('category') %}selected{% endif %}>Select Category</option>
+                <option value="General" {% if profile.get('category') == 'General' %}selected{% endif %}>General / Open</option>
+                <option value="OBC" {% if profile.get('category') == 'OBC' %}selected{% endif %}>OBC (Other Backward Classes)</option>
+                <option value="SC" {% if profile.get('category') == 'SC' %}selected{% endif %}>SC (Scheduled Caste)</option>
+                <option value="ST" {% if profile.get('category') == 'ST' %}selected{% endif %}>ST (Scheduled Tribe)</option>
+              </select>
+            </div>
+
+            <!-- Disability Toggle -->
+            <div class="form-group col-span-2">
+              <label class="form-label">Are you certified as Specially-Abled / Person with Disability (PwD)? <span class="required">*</span></label>
+              <div class="radio-pill-group">
+                <div class="radio-pill">
+                  <input type="radio" id="disability-no" name="disability" value="No" {% if not profile.get('disability') %}checked{% endif %} required>
+                  <label for="disability-no">No</label>
+                </div>
+                <div class="radio-pill">
+                  <input type="radio" id="disability-yes" name="disability" value="Yes" {% if profile.get('disability') %}checked{% endif %}>
+                  <label for="disability-yes">Yes (PwD Certified)</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Conditional Disability Percentage -->
+            <div class="form-group col-span-2" id="disability-pct-group" style="display: none;">
+              <label for="disability_percentage" class="form-label">Certified Disability Percentage (%) <span class="required">*</span></label>
+              <input type="number" id="disability_percentage" name="disability_percentage" class="form-control" placeholder="e.g. 40" min="1" max="100" value="{{ profile.get('disability_percentage', '0') }}">
+              <span class="form-help">Schemes like AICTE Saksham require minimum 40% certified disability.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5: College Info & Review -->
+        <div class="form-step" data-step="5">
+          <h2 class="form-step-title">Step 5: College Residency & Review</h2>
+          <p class="form-step-desc">Confirm your residency status and review your profile before matching.</p>
+
+          <div class="form-grid" style="margin-bottom: 1.5rem;">
+            <!-- Hostel Status -->
+            <div class="form-group col-span-2">
+              <label class="form-label">Are you currently residing in an approved College Hostel / Rented Accommodation? <span class="required">*</span></label>
+              <div class="radio-pill-group">
+                <div class="radio-pill">
+                  <input type="radio" id="hostel-no" name="hostel_status" value="No" {% if not profile.get('hostel_status') %}checked{% endif %} required>
+                  <label for="hostel-no">No (Day Scholar / Local Resident)</label>
+                </div>
+                <div class="radio-pill">
+                  <input type="radio" id="hostel-yes" name="hostel_status" value="Yes" {% if profile.get('hostel_status') %}checked{% endif %}>
+                  <label for="hostel-yes">Yes (Hostel / Resident)</label>
+                </div>
+              </div>
+              <span class="form-help">Specific schemes (like Panjabrao Deshmukh) provide additional hostel maintenance allowance.</span>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem;">Profile Summary Preview</h3>
+          <div class="review-box">
+            <div class="review-item"><span class="review-key">Gender:</span><span class="review-value" id="rev-gender">—</span></div>
+            <div class="review-item"><span class="review-key">Age:</span><span class="review-value" id="rev-age">—</span></div>
+            <div class="review-item"><span class="review-key">Domicile:</span><span class="review-value" id="rev-domicile">—</span></div>
+            <div class="review-item"><span class="review-key">Branch:</span><span class="review-value" id="rev-branch">—</span></div>
+            <div class="review-item"><span class="review-key">Academic Year:</span><span class="review-value" id="rev-year">—</span></div>
+            <div class="review-item"><span class="review-key">CGPA:</span><span class="review-value" id="rev-cgpa">—</span></div>
+            <div class="review-item"><span class="review-key">12th/Diploma %:</span><span class="review-value" id="rev-percentage">—</span></div>
+            <div class="review-item"><span class="review-key">Family Income:</span><span class="review-value" id="rev-income">—</span></div>
+            <div class="review-item"><span class="review-key">Category:</span><span class="review-value" id="rev-category">—</span></div>
+            <div class="review-item"><span class="review-key">Disability:</span><span class="review-value" id="rev-disability">—</span></div>
+            <div class="review-item"><span class="review-key">BPL Status:</span><span class="review-value" id="rev-bpl">—</span></div>
+            <div class="review-item"><span class="review-key">Hostel Resident:</span><span class="review-value" id="rev-hostel">—</span></div>
+          </div>
+        </div>
+
+        <!-- Wizard Navigation Footer -->
+        <div class="wizard-footer">
+          <button type="button" id="btn-prev" class="btn btn-secondary" style="display: none;">
+            <span>← Back</span>
+          </button>
+          
+          <div style="margin-left: auto;">
+            <button type="button" id="btn-next" class="btn btn-primary">
+              <span>Next Step →</span>
+            </button>
+            <button type="submit" id="btn-submit" class="btn btn-primary" style="display: none; background-color: var(--accent-600); border-color: var(--accent-600);">
+              <span>Find My Scholarships →</span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/questionnaire.js') }}"></script>
+{% endblock %}

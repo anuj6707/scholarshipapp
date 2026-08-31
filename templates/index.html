@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}ScholarMatch | Find Scholarships You're Eligible For{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-badge">
+      <span>✨</span>
+      <span>Hybrid AI Recommendation & Rule-Based Eligibility Engine</span>
+    </div>
+
+    <h1 class="hero-title">
+      Find Scholarships You're Eligible For
+    </h1>
+
+    <p class="hero-subtitle">
+      Discover scholarships matched to your academic, financial and personal profile. Never miss financial aid opportunities tailored for your engineering degree.
+    </p>
+
+    <div class="hero-cta-group">
+      <a href="{{ url_for('questionnaire') }}" class="btn btn-primary btn-lg">
+        <span>Find My Scholarships</span>
+        <span>→</span>
+      </a>
+      <a href="{{ url_for('scholarships_list') }}" class="btn btn-secondary btn-lg">
+        <span>Browse All ({{ total_scholarships }})</span>
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">{{ total_scholarships }}+</div>
+        <div class="stat-label">Verified Scholarships</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Rule-Engine Checked</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">AI Powered</div>
+        <div class="stat-label">Recommendation Scoring</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">Direct</div>
+        <div class="stat-label">Official Application Links</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="section-py" style="background-color: #ffffff;">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Simple 4-Step Process</span>
+      <h2 class="section-title">How ScholarMatch Works</h2>
+      <p class="section-desc">
+        We eliminate guesswork and save hours of searching by combining hard eligibility checking with machine learning match ranking.
+      </p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3 class="step-title">Tell us about yourself</h3>
+        <p class="step-text">
+          Fill out a quick 5-step questionnaire covering your branch, academic marks, domicile, category, and family income.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3 class="step-title">AI analyzes your profile</h3>
+        <p class="step-text">
+          Our eligibility engine validates official requirements while the ML model scores scholarship affinity and fit.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3 class="step-title">Discover matching scholarships</h3>
+        <p class="step-text">
+          Review your personalized recommendations ranked by score, with clear explanations of why you qualify.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <h3 class="step-title">Apply directly</h3>
+        <p class="step-text">
+          Access complete document checklists, deadline notifications, and 1-click links to official application portals.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Scholarships Section -->
+<section class="section-py" style="background-color: var(--slate-50);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Top Opportunities</span>
+      <h2 class="section-title">Featured College Scholarships</h2>
+      <p class="section-desc">
+        High-impact scholarship programs supporting engineering and technical undergraduate students.
+      </p>
+    </div>
+
+    <div class="scholarship-grid">
+      {% for sch in featured_scholarships %}
+        <div class="scholarship-card">
+          <div class="card-top">
+            <div class="card-badge-row">
+              {% if sch.ml_target_key %}
+                <span class="badge badge-ai">⚡ AI Supported</span>
+              {% else %}
+                <span class="badge badge-rule">📋 Rule Match</span>
+              {% endif %}
+              <span style="font-size: 0.8rem; color: var(--slate-500); font-weight: 600;">
+                📅 Deadline: {{ sch.deadline }}
+              </span>
+            </div>
+
+            <h3 class="sch-title">{{ sch.name }}</h3>
+            <p class="sch-provider">{{ sch.provider }}</p>
+            <div class="sch-amount">{{ sch.maximum_amount | currency_inr }}</div>
+            <p class="sch-benefit">{{ sch.benefit_type }}</p>
+          </div>
+
+          <div class="card-content">
+            <p style="font-size: 0.875rem; color: var(--slate-600); margin-bottom: 1rem;">
+              {{ sch.description | truncate(140) }}
+            </p>
+
+            <div style="font-size: 0.8rem; color: var(--slate-500); display: flex; flex-direction: column; gap: 0.25rem;">
+              <div><strong>Eligible Gender:</strong> {{ sch.eligible_gender | join(', ') }}</div>
+              <div><strong>Target Years:</strong> Year {{ sch.eligible_years | join(', ') }}</div>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <a href="{{ url_for('scholarship_detail', scholarship_id=sch.id) }}" class="btn btn-secondary card-btn">
+              <span>View Full Details</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div style="text-align: center; margin-top: 2.5rem;">
+      <a href="{{ url_for('scholarships_list') }}" class="btn btn-secondary">
+        <span>View All {{ total_scholarships }} Scholarships</span>
+        <span>→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section style="background: linear-gradient(135deg, var(--slate-900), var(--primary-900)); color: #ffffff; padding: 4.5rem 0; text-align: center;">
+  <div class="container">
+    <h2 style="color: #ffffff; font-size: 2.25rem; margin-bottom: 1rem;">
+      Ready to discover scholarships matched to you?
+    </h2>
+    <p style="color: var(--slate-300); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">
+      Takes less than 2 minutes. Get instant eligibility verification and AI recommendations.
+    </p>
+    <a href="{{ url_for('questionnaire') }}" class="btn btn-primary btn-lg" style="background-color: var(--accent-500); border-color: var(--accent-500);">
+      <span>Start Questionnaire Now</span>
+      <span>→</span>
+    </a>
+  </div>
+</section>
+{% endblock %}

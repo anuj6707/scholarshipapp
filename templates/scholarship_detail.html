@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+
+{% block title %}{{ scholarship.name }} | ScholarMatch{% endblock %}
+
+{% block content %}
+<div class="detail-header">
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="{{ url_for('index') }}">Home</a>
+      <span>/</span>
+      <a href="{{ url_for('scholarships_list') }}">Scholarships</a>
+      <span>/</span>
+      <span>{{ scholarship.name }}</span>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem;">
+      <div style="max-width: 800px;">
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+          {% if scholarship.ml_target_key %}
+            <span class="badge badge-ai">⚡ AI Recommendation Supported</span>
+          {% else %}
+            <span class="badge badge-rule">📋 Rule-Based Evaluation</span>
+          {% endif %}
+
+          {% if user_status %}
+            {% if user_status.eligible %}
+              <span class="badge badge-eligible">🟢 Your Profile is Eligible</span>
+            {% else %}
+              <span class="badge badge-ineligible">🔴 Your Profile is Ineligible</span>
+            {% endif %}
+          {% endif %}
+        </div>
+
+        <h1 style="font-size: 2.25rem; margin-bottom: 0.35rem;">{{ scholarship.name }}</h1>
+        <p style="font-size: 1.1rem; color: var(--slate-600); font-weight: 500;">
+          Offered by: <strong>{{ scholarship.provider }}</strong>
+        </p>
+      </div>
+
+      <div style="text-align: right;">
+        <div style="font-size: 0.85rem; color: var(--slate-500); font-weight: 500;">Maximum Financial Grant</div>
+        <div style="font-size: 2.25rem; font-weight: 800; color: var(--accent-700);">
+          {{ scholarship.maximum_amount | currency_inr }}
+        </div>
+        <div style="font-size: 0.85rem; color: var(--slate-600);">{{ scholarship.benefit_type }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="detail-grid">
+    <!-- Main Details Column -->
+    <div class="detail-main">
+      
+      <!-- User Match Assessment Box (if user submitted profile) -->
+      {% if user_status %}
+        <div class="detail-card" style="border-left: 4px solid {% if user_status.eligible %}var(--accent-600){% else %}var(--rose-500){% endif %};">
+          <h2 class="detail-card-title" style="display: flex; align-items: center; justify-content: space-between;">
+            <span>Your Profile Eligibility Assessment</span>
+            <span style="font-size: 0.9rem; font-weight: 700; color: {% if user_status.eligible %}var(--accent-700){% else %}var(--rose-700){% endif %};">
+              {% if user_status.eligible %}MATCH VERIFIED ✓{% else %}REQUIREMENTS UNMET ✗{% endif %}
+            </span>
+          </h2>
+
+          {% if user_status.eligible %}
+            <p style="color: var(--slate-700); margin-bottom: 0.75rem; font-size: 0.95rem;">
+              Based on your submitted academic and financial profile, you meet all hard eligibility criteria for this scholarship.
+            </p>
+            <ul class="reasons-list">
+              {% for reason in user_status.reasons %}
+                <li class="passed">{{ reason }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p style="color: var(--rose-700); margin-bottom: 0.75rem; font-size: 0.95rem; font-weight: 600;">
+              You do not meet the following mandatory requirement(s):
+            </p>
+            <ul class="reasons-list">
+              {% for failed in user_status.failed_requirements %}
+                <li class="failed">{{ failed }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <!-- Overview & Description -->
+      <div class="detail-card">
+        <h2 class="detail-card-title">Scholarship Overview</h2>
+        <p style="font-size: 1rem; color: var(--slate-700); line-height: 1.7; margin-bottom: 1.5rem;">
+          {{ scholarship.description }}
+        </p>
+
+        <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem;">Key Highlight Tags</h3>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          {% for tag in scholarship.tags %}
+            <span style="background-color: var(--slate-100); color: var(--slate-700); padding: 0.3rem 0.75rem; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600;">
+              🏷️ {{ tag }}
+            </span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Eligibility Criteria Table -->
+      <div class="detail-card">
+        <h2 class="detail-card-title">Detailed Eligibility Criteria</h2>
+        <table class="specs-table">
+          <tbody>
+            <tr>
+              <th>Eligible Gender</th>
+              <td>{{ scholarship.eligible_gender | join(', ') }}</td>
+            </tr>
+            <tr>
+              <th>Target Branches</th>
+              <td>{{ scholarship.eligible_branches | join(', ') }}</td>
+            </tr>
+            <tr>
+              <th>Eligible Years of Study</th>
+              <td>
+                {% if 'All' in scholarship.eligible_years %}
+                  All Academic Years (1st to 4th Year)
+                {% else %}
+                  Year {{ scholarship.eligible_years | join(', Year ') }}
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <th>Minimum Academic CGPA</th>
+              <td>{{ scholarship.minimum_cgpa if scholarship.minimum_cgpa is not none else 'Not specified / Open' }}</td>
+            </tr>
+            <tr>
+              <th>Minimum 12th / Diploma %</th>
+              <td>{{ scholarship.minimum_percentage if scholarship.minimum_percentage is not none else 'Not specified' }}{% if scholarship.minimum_percentage %}%{% endif %}</td>
+            </tr>
+            <tr>
+              <th>Max Annual Family Income</th>
+              <td>
+                {% if scholarship.maximum_family_income %}
+                  {{ scholarship.maximum_family_income | currency_inr }} per annum
+                {% else %}
+                  No income ceiling (Open to all income brackets)
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <th>Social Categories</th>
+              <td>{{ scholarship.eligible_categories | join(', ') }}</td>
+            </tr>
+            <tr>
+              <th>Domicile Requirement</th>
+              <td>{{ scholarship.domicile_requirement | join(', ') }}</td>
+            </tr>
+            <tr>
+              <th>Hostel Requirement</th>
+              <td>{{ 'Mandatory (Hostel residency required)' if scholarship.hostel_requirement else 'No hostel requirement' }}</td>
+            </tr>
+            <tr>
+              <th>Specially-Abled / PwD</th>
+              <td>
+                {% if scholarship.disability_requirement %}
+                  Exclusively for PwD (Min {{ scholarship.minimum_disability_percentage }}% disability)
+                {% else %}
+                  Open to all candidates
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <th>Age Limit</th>
+              <td>
+                {% if scholarship.age_requirement %}
+                  {{ scholarship.age_requirement.min }} to {{ scholarship.age_requirement.max }} years
+                {% else %}
+                  Not specified
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Required Documents Checklist -->
+      <div class="detail-card">
+        <h2 class="detail-card-title">Mandatory Documents Checklist</h2>
+        <p style="font-size: 0.9rem; color: var(--slate-500); margin-bottom: 1rem;">
+          Keep scanned copies (PDF / JPEG) of the following documents ready before beginning the application:
+        </p>
+
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem;">
+          {% for doc in scholarship.documents_required %}
+            <li style="display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.95rem; color: var(--slate-800);">
+              <span style="color: var(--primary-600); font-weight: bold;">📄</span>
+              <span>{{ doc }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Sidebar Application Column -->
+    <div class="detail-sidebar">
+      
+      <!-- Apply / Official Link Card -->
+      <div class="apply-card">
+        <h3>Ready to Apply?</h3>
+        <p>
+          Visit the official provider website to submit your scholarship application directly.
+        </p>
+
+        {% set apply_link = scholarship.application_url or scholarship.official_url %}
+        
+        {% if apply_link %}
+          <a href="{{ apply_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-apply">
+            <span>Apply on Official Portal</span>
+            <span>↗</span>
+          </a>
+          <p style="font-size: 0.75rem; color: var(--slate-400); margin-top: 0.75rem;">
+            Opens official portal in a new browser tab.
+          </p>
+        {% else %}
+          <div class="unavailable-box">
+            <span>⚠️ Official application link currently unavailable.</span>
+          </div>
+          <p style="font-size: 0.75rem; color: var(--slate-400); margin-top: 0.75rem;">
+            Please contact college administration or check back once the cycle opens.
+          </p>
+        {% endif %}
+      </div>
+
+      <!-- Timeline & Verification Meta Card -->
+      <div class="detail-card">
+        <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Important Timeline</h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.9rem;">
+          <div>
+            <span style="color: var(--slate-500); font-size: 0.8rem; display: block;">Application Deadline:</span>
+            <strong style="color: var(--slate-900); font-size: 1.05rem;">📅 {{ scholarship.deadline }}</strong>
+          </div>
+
+          <div>
+            <span style="color: var(--slate-500); font-size: 0.8rem; display: block;">Last Verified By Team:</span>
+            <strong>{{ scholarship.last_verified }}</strong>
+          </div>
+
+          <div>
+            <span style="color: var(--slate-500); font-size: 0.8rem; display: block;">Scheme Status:</span>
+            <span style="color: var(--accent-700); font-weight: 700;">● Active for Academic Year 2026</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back to Matches button -->
+      <div>
+        <a href="{{ url_for('results') }}" class="btn btn-secondary" style="width: 100%;">
+          <span>← Back to My Matches</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

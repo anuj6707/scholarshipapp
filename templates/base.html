@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI/ML powered College Scholarship Recommendation and Eligibility Platform. Discover financial aid matched to your profile.">
+  <title>{% block title %}ScholarMatch | AI Scholarship Recommendation Platform{% endblock %}</title>
+  
+  <!-- Custom Modern CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  <!-- Site Navigation Header -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="{{ url_for('index') }}" class="brand-logo">
+        <div class="brand-icon">🎓</div>
+        <div>
+          <span>{{ app_name }}</span>
+          <span class="brand-tagline">AI-Powered Scholarship Matching</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li>
+            <a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('scholarships_list') }}" class="nav-link {% if request.endpoint == 'scholarships_list' %}active{% endif %}">
+              All Scholarships
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">
+              About & Methodology
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('questionnaire') }}" class="nav-btn">
+              <span>Find My Scholarships</span>
+              <span>→</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Flash Notifications -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Main Content Block -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>🎓 {{ app_name }}</h4>
+          <p style="margin-bottom: 1rem; color: var(--slate-400);">
+            Empowering college engineering students to discover, verify eligibility, and apply directly to official scholarships through a hybrid AI/ML & rule-based engine.
+          </p>
+          <p style="font-size: 0.8rem; color: var(--slate-500);">
+            Designed for undergraduate & technical students.
+          </p>
+        </div>
+
+        <div>
+          <h5 class="footer-title">Quick Navigation</h5>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('questionnaire') }}">Find Scholarships Wizard</a></li>
+            <li><a href="{{ url_for('scholarships_list') }}">Browse All 30+ Scholarships</a></li>
+            <li><a href="{{ url_for('about') }}">ML & Eligibility Methodology</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="footer-title">Key Scholarship Categories</h5>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('scholarships_list') }}?category=Women">Women in STEM</a></li>
+            <li><a href="{{ url_for('scholarships_list') }}?category=Merit">Merit-cum-Means</a></li>
+            <li><a href="{{ url_for('scholarships_list') }}?category=Government">Government (MahaDBT / NSP)</a></li>
+            <li><a href="{{ url_for('scholarships_list') }}?category=Corporate">Corporate CSR Schemes</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© {{ current_year }} {{ app_name }}. All scholarship details are sourced from verified official notifications. Independent eligibility engine.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>
