@@ -2,6 +2,8 @@
 
 A production-ready, full-stack AI/ML-powered college scholarship recommendation website designed for undergraduate students. Inspired by *MyScheme*, ScholarMatch couples **hard rule-based eligibility verification** with **scikit-learn / XGBoost machine learning recommendation models** to guide students directly to verified scholarships they qualify for.
 
+LINK TO LOVE PROJECT :https://scholarshipapp-uauv.onrender.com
+
 ---
 
 ## 🌟 Key Features
