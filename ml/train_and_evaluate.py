@@ -357,29 +357,30 @@ def train_and_evaluate_system():
     clean_df.to_csv(csv_path, index=False)
     print(f"Saved refined 27-feature dataset to {csv_path}")
 
-    # Build Pipeline
+    # Build Robust Preprocessor (immune to sklearn version differences)
     X = clean_df[FEATURE_COLUMNS]
     
-    numeric_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='median')),
-        ('scaler', StandardScaler())
-    ])
+    scaler = StandardScaler()
+    scaler.fit(clean_df[NUMERICAL_FEATURES])
 
-    categorical_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='most_frequent')),
-        ('encoder', OneHotEncoder(handle_unknown='ignore', sparse_output=False))
-    ])
+    encoder = OneHotEncoder(handle_unknown='ignore', sparse_output=False)
+    encoder.fit(clean_df[CATEGORICAL_FEATURES])
 
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ('numeric', numeric_transformer, NUMERICAL_FEATURES),
-            ('categorical', categorical_transformer, CATEGORICAL_FEATURES)
-        ]
-    )
+    preprocessor = {
+        "scaler": scaler,
+        "encoder": encoder,
+        "numerical_features": NUMERICAL_FEATURES,
+        "categorical_features": CATEGORICAL_FEATURES
+    }
+
+    def transform_data(df):
+        num_data = scaler.transform(df[NUMERICAL_FEATURES])
+        cat_data = encoder.transform(df[CATEGORICAL_FEATURES])
+        return np.hstack([num_data, cat_data])
 
     X_train, X_test, df_train, df_test = train_test_split(X, clean_df, test_size=0.20, random_state=42)
-    X_train_proc = preprocessor.fit_transform(X_train)
-    X_test_proc = preprocessor.transform(X_test)
+    X_train_proc = transform_data(X_train)
+    X_test_proc = transform_data(X_test)
     print(f"Transformed feature matrix shape: {X_train_proc.shape}")
 
     # 3. Train Models
