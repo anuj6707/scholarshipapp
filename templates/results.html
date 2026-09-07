@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Your Scholarship Matches | ScholarMatch{% endblock %}
+{% block title %}Your Scholarship Matches | {{ app_name }}{% endblock %}
 
 {% block content %}
 <!-- Results Header -->
@@ -9,10 +9,10 @@
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
       <div>
         <span class="section-tag">Match Results</span>
-        <h1 style="font-size: 2.25rem; margin-bottom: 0.5rem;">Your Scholarship Matches</h1>
+        <h1 style="font-size: 2.25rem; margin-bottom: 0.5rem;">Your Scholarship Recommendations</h1>
         <p style="color: var(--slate-600); font-size: 1.1rem;">
-          We evaluated <strong>{{ total_evaluated }} scholarships</strong> and found 
-          <strong style="color: var(--accent-700);">{{ eligible | length }} matching opportunities</strong> for your profile.
+          We evaluated <strong>{{ total_evaluated }} scholarships</strong> using our AI/ML model and NLP criteria matcher, finding 
+          <strong style="color: var(--accent-700);">{{ eligible | length }} matching opportunities</strong>.
         </p>
       </div>
 
@@ -23,11 +23,12 @@
       </div>
     </div>
 
-    <!-- Student Profile Summary Bar -->
+    <!-- Student Profile Summary Bar (No Personal Name) -->
     <div style="margin-top: 1.5rem; padding: 0.85rem 1.25rem; background-color: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--slate-200); display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: 0.875rem;">
-      <div><span style="color: var(--slate-500);">Student:</span> <strong>{{ student_profile.gender }}, Year {{ student_profile.year }}</strong></div>
+      <div><span style="color: var(--slate-500);">Profile:</span> <strong>{{ student_profile.gender }}, Year {{ student_profile.year }}</strong></div>
       <div><span style="color: var(--slate-500);">Branch:</span> <strong>{{ student_profile.branch }}</strong></div>
       <div><span style="color: var(--slate-500);">CGPA:</span> <strong>{{ student_profile.cgpa }}</strong></div>
+      <div><span style="color: var(--slate-500);">Percentage:</span> <strong>{{ student_profile.percentage }}%</strong></div>
       <div><span style="color: var(--slate-500);">Income:</span> <strong>{{ student_profile.family_income | currency_inr }}</strong></div>
       <div><span style="color: var(--slate-500);">Domicile:</span> <strong>{{ student_profile.domicile }}</strong></div>
       <div><span style="color: var(--slate-500);">Category:</span> <strong>{{ student_profile.category }}</strong></div>
@@ -47,7 +48,7 @@
         <div class="metric-icon purple">⚡</div>
         <div>
           <div class="metric-val">{{ ml_recommended_count }}</div>
-          <div class="metric-title">AI-Scored Recommendations</div>
+          <div class="metric-title">AI/ML & NLP Scored</div>
         </div>
       </div>
 
@@ -66,7 +67,7 @@
         All Eligible Matches ({{ eligible | length }})
       </button>
       <button type="button" class="filter-tab" data-filter="ai-match">
-        AI Top Recommendations ({{ ml_recommended_count }})
+        AI & NLP Top Recommendations ({{ ml_recommended_count }})
       </button>
       <button type="button" class="filter-tab" data-filter="rule-match">
         Rule-Based Matches ({{ (eligible | length) - ml_recommended_count }})
@@ -93,7 +94,7 @@
             <span class="badge badge-eligible">🟢 Eligible</span>
 
             {% if sch.has_ml_score %}
-              <span class="badge badge-ai">⚡ AI Recommended</span>
+              <span class="badge badge-ai">⚡ AI & NLP Model</span>
             {% else %}
               <span class="badge badge-rule">📋 Rule-based match</span>
             {% endif %}
@@ -108,24 +109,25 @@
               <p class="sch-benefit">{{ sch.benefit_type }}</p>
             </div>
 
-            {% if sch.has_ml_score %}
-              <div class="score-pill" title="AI Machine Learning Recommendation Score based on student characteristics">
-                <span>⚡ Score:</span>
-                <strong>{{ sch.recommendation_score_pct }}%</strong>
+            <div style="display: flex; flex-direction: column; gap: 0.35rem; align-items: flex-end;">
+              <div class="score-pill ml-pill" title="Machine Learning Random Forest Recommendation Score">
+                <span>⚡ ML Fit:</span>
+                <strong>{{ sch.ml_score_pct }}%</strong>
               </div>
-            {% else %}
-              <div class="score-pill" style="background-color: var(--primary-50); color: var(--primary-700); border-color: var(--primary-100);" title="Deterministic rule-based qualification fit score">
-                <span>📋 Match:</span>
-                <strong>{{ sch.recommendation_score_pct }}%</strong>
-              </div>
-            {% endif %}
+              {% if sch.has_nlp_score and sch.nlp_score_pct > 0 %}
+                <div class="score-pill nlp-pill" title="NLP TF-IDF Semantic Cosine Similarity with official criteria">
+                  <span>🔍 NLP Match:</span>
+                  <strong>{{ sch.nlp_score_pct }}%</strong>
+                </div>
+              {% endif %}
+            </div>
           </div>
         </div>
 
         <div class="card-content">
           <!-- Why you are eligible -->
           <div class="reasons-box">
-            <div class="reasons-title">Why you're eligible:</div>
+            <div class="reasons-title">Why you qualify:</div>
             <ul class="reasons-list">
               {% for reason in sch.eligibility_reasons[:3] %}
                 <li class="passed">{{ reason }}</li>
@@ -148,7 +150,7 @@
 
         <div class="card-footer">
           <a href="{{ url_for('scholarship_detail', scholarship_id=sch.id) }}" class="btn btn-primary card-btn">
-            <span>View Scholarship</span>
+            <span>View Scholarship Details</span>
             <span>→</span>
           </a>
         </div>
@@ -161,7 +163,7 @@
         <div class="card-top">
           <div class="card-badge-row">
             <span class="badge badge-ineligible">🔴 Ineligible</span>
-            <span style="font-size: 0.75rem; color: var(--slate-500);">Unmet criteria</span>
+            <span style="font-size: 0.75rem; color: var(--slate-500);">Criteria unmet</span>
           </div>
 
           <h3 class="sch-title" style="color: var(--slate-700);">{{ sch.name }}</h3>

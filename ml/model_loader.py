@@ -4,31 +4,46 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-_MODEL = None
-_MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model.pkl")
+_SYSTEM_OBJ = None
+_SYSTEM_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scholarship_system.pkl")
 
-# Mapping of target index / column name to scholarship identifier
-TARGET_COLUMNS = [
-    "target_cummins",
-    "target_siemens",
-    "target_reliance",
-    "target_lila",
-    "target_skf",
-    "target_katalyst",
-    "target_adobe_wit",
-    "target_saksham",
-]
-
-TARGET_TO_SCHOLARSHIP_ID = {
-    "target_cummins": "cummins",
-    "target_siemens": "siemens",
-    "target_reliance": "reliance",
-    "target_lila": "lila_poonawala",
-    "target_skf": "skf",
-    "target_katalyst": "katalyst",
-    "target_adobe_wit": "adobe_wit",
-    "target_saksham": "aicte_saksham",
+# Mapping of scholarship IDs (as used in JSON database & web app) to model target keys
+SCHOLARSHIP_ID_TO_TARGET = {
+    "cybage_khushboo": "cybage_khushboo",
+    "skf": "skf",
+    "lila_poonawala": "lila_poonawala",
+    "katalyst": "katalyst",
+    "colgate_keep_india_smiling": "colgate_keep_india_smiling",
+    "kiran_girls": "kiran_girls",
+    "queens_scholarship": "queens_scholarship",
+    "reliance": "reliance_foundation",
+    "cummins": "cummins",
+    "ffe": "foundation_for_excellence",
+    "ieee_wie": "ieee_wie",
+    "siemens": "siemens",
+    "sitaram_jindal": "sitaram_jindal",
+    "hdfc_ecss": "hdfc_ecss",
+    "swami_dayanand": "swami_dayanand",
+    "yashad_sumedha": "yashad_sumedha",
+    "nse_india": "nice_nse",
+    "op_jindal_engineering": "opjems",
+    "m_scholarship": "magma_scholarship",
+    "jspn": "jspn",
+    "padala_charitable_trust": "padala_charitable_trust",
+    "rajarshi_shahu_maharaj": "rajarshi_shahu",
+    "adobe_wit": "adobe_wit",
+    "glow_and_lovely": "glow_lovely",
+    "loreal_young_women": "loreal_women_science",
+    "ugam_legrand": "ugam_legrand",
+    "indous_women_stemm": "indous_stemm",
+    "aicte_pragati": "aicte_pragati",
+    "aicte_saksham": "aicte_saksham",
+    "rmd_foundation": "rmd_foundation",
+    "disha_parivar": "disha_parivar",
+    "iocl_merit": "iocl_merit",
 }
+
+TARGET_TO_SCHOLARSHIP_ID = {v: k for k, v in SCHOLARSHIP_ID_TO_TARGET.items()}
 
 FEATURE_NAMES = [
     "gender",
@@ -46,29 +61,29 @@ FEATURE_NAMES = [
     "hostel_status",
 ]
 
-def load_model(model_path: str = None):
+def load_system(model_path: str = None):
     """
-    Loads and returns the ML model pipeline singleton.
-    Loads from disk only once at application startup.
+    Loads and returns the combined ML & NLP scholarship system dictionary.
+    Loaded once as a singleton at application startup.
     """
-    global _MODEL
-    if _MODEL is not None:
-        return _MODEL
+    global _SYSTEM_OBJ
+    if _SYSTEM_OBJ is not None:
+        return _SYSTEM_OBJ
 
-    path = model_path or _MODEL_PATH
+    path = model_path or _SYSTEM_PATH
     if not os.path.exists(path):
-        raise FileNotFoundError(f"ML Model file not found at path: {path}")
+        raise FileNotFoundError(f"Scholarship system pickle file not found at path: {path}")
 
     try:
-        _MODEL = joblib.load(path)
-        logger.info(f"ML Model successfully loaded from {path}")
-        return _MODEL
+        _SYSTEM_OBJ = joblib.load(path)
+        logger.info(f"Scholarship NLP+ML system successfully loaded from {path}")
+        return _SYSTEM_OBJ
     except Exception as e:
-        logger.error(f"Failed to load ML model from {path}: {e}")
-        raise RuntimeError(f"Error loading ML model from {path}: {e}")
+        logger.error(f"Failed to load scholarship system from {path}: {e}")
+        raise RuntimeError(f"Error loading scholarship system from {path}: {e}")
 
-def get_model():
+def get_system():
     """
-    Returns the cached model instance, loading it if not yet loaded.
+    Returns the cached system object.
     """
-    return load_model()
+    return load_system()

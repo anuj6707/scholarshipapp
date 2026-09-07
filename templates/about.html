@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}About & ML Methodology | ScholarMatch{% endblock %}
+{% block title %}About & Methodology | {{ app_name }}{% endblock %}
 
 {% block content %}
 <div class="container section-py" style="max-width: 900px;">
   <div class="section-header" style="text-align: left; margin-bottom: 2.5rem;">
-    <span class="section-tag">Architecture & Transparency</span>
-    <h1 style="font-size: 2.25rem; margin-bottom: 0.75rem;">How ScholarMatch Works</h1>
+    <span class="section-tag">Architecture & AI Methodology</span>
+    <h1 style="font-size: 2.25rem; margin-bottom: 0.75rem;">How {{ app_name }} Works</h1>
     <p style="color: var(--slate-600); font-size: 1.1rem;">
-      Understanding our hybrid architecture, machine learning model integration, and eligibility verification.
+      Understanding our hybrid architecture combining hard statutory eligibility checking, machine learning classification, and NLP criteria text similarity.
     </p>
   </div>
 
@@ -18,40 +18,50 @@
     <div class="detail-card">
       <h2 class="detail-card-title">1. The Hybrid Recommendation Architecture</h2>
       <p style="color: var(--slate-700); line-height: 1.7; margin-bottom: 1rem;">
-        ScholarMatch uses a <strong>two-stage hybrid recommendation system</strong>. Many recommendation engines fail in financial aid because they allow probabilistic models to recommend schemes for which the student violates strict hard legal criteria (e.g. recommending a female-exclusive scholarship to a male applicant).
+        {{ app_name }} uses a <strong>two-stage hybrid recommendation system</strong>. Many naive recommendation engines fail in financial aid because they allow probabilistic models to recommend schemes for which the student violates strict statutory rules (e.g. recommending female-exclusive scholarships to male students or Maharashtra-domicile schemes to out-of-state applicants).
       </p>
       <div style="background-color: var(--slate-50); padding: 1.25rem; border-radius: var(--radius-md); border-left: 4px solid var(--primary-600); font-size: 0.95rem; color: var(--slate-800); margin-bottom: 1rem;">
-        <strong>Rule Engine Priority:</strong> The rule-based eligibility engine takes absolute priority over ML scores. If a student fails any hard criterion (gender, age, income ceiling, branch, domicile, disability), the scholarship is marked ineligible and excluded from the primary eligible recommendations.
+        <strong>Rule Engine Priority:</strong> The rule-based eligibility engine takes absolute precedence. If a student fails any hard criterion (gender, age, income ceiling, branch, domicile, disability), the scholarship is marked ineligible and excluded from the primary eligible recommendations.
       </div>
       <p style="color: var(--slate-700); line-height: 1.7;">
-        Only scholarships that pass 100% of hard constraints proceed to scoring and ranking.
+        Only scholarships that pass 100% of hard statutory constraints proceed to scoring and ranking.
       </p>
     </div>
 
     <!-- Machine Learning Model Card -->
     <div class="detail-card">
-      <h2 class="detail-card-title">2. Machine Learning Model Details</h2>
+      <h2 class="detail-card-title">2. Machine Learning Predictive Pipeline</h2>
       <p style="color: var(--slate-700); line-height: 1.7; margin-bottom: 1rem;">
-        Our ML pipeline is built with <code>scikit-learn</code> and <code>XGBoost</code>:
+        Our ML system is built with <code>scikit-learn</code> with full coverage across 32 scholarship targets:
       </p>
       <ul style="list-style: disc; padding-left: 1.5rem; color: var(--slate-700); line-height: 1.7; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
-        <li><strong>Pipeline Preprocessor:</strong> <code>ColumnTransformer</code> with <code>StandardScaler</code> for numerical features (CGPA, percentage, income, age, disability %), <code>OneHotEncoder</code> for categorical attributes (gender, domicile, branch, category), and passthrough for boolean indicators.</li>
-        <li><strong>Classifier:</strong> <code>MultiOutputClassifier</code> wrapping 8 independent <code>XGBClassifier</code> models for the primary scholarship targets.</li>
-        <li><strong>Output Metric:</strong> Calibrated recommendation affinity score generated using <code>predict_proba</code>.</li>
+        <li><strong>Feature Engineering:</strong> Computes 9 domain-specific derived indicators including <code>academic_score</code>, <code>financial_need</code>, <code>high_academic_performer</code>, <code>is_first_year</code>, <code>is_pwd</code>, <code>high_disability</code>, <code>need_and_merit</code>, <code>log_income</code>, and <code>college_progress</code>.</li>
+        <li><strong>Pipeline Preprocessor:</strong> <code>ColumnTransformer</code> with median imputation and <code>StandardScaler</code> for 15 numerical features, and mode imputation with <code>OneHotEncoder</code> for 7 categorical attributes.</li>
+        <li><strong>Classifiers:</strong> 32 dedicated <code>RandomForestClassifier</code> models predicting the probability of scholarship match.</li>
       </ul>
-      <p style="color: var(--slate-700); line-height: 1.7;">
-        For the remaining 25+ scholarships without direct ML target columns in the current model, ScholarMatch computes a deterministic rule-based fit score based on academic merit, financial need fit, and eligibility alignment, clearly labeled as <em>"Rule-based match"</em>.
-      </p>
     </div>
 
-    <!-- Research Limitation Disclaimer (Section 31 of prompt) -->
+    <!-- NLP Criteria Semantic Matching Card -->
+    <div class="detail-card">
+      <h2 class="detail-card-title">3. Natural Language Processing (NLP) Semantic Matcher</h2>
+      <p style="color: var(--slate-700); line-height: 1.7; margin-bottom: 1rem;">
+        In addition to tabular classification, {{ app_name }} utilizes an <strong>NLP TF-IDF Vector Space Model</strong> to semantically compare student profile summaries against official eligibility criteria guidelines:
+      </p>
+      <ul style="list-style: disc; padding-left: 1.5rem; color: var(--slate-700); line-height: 1.7; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+        <li><strong>Criteria Corpus:</strong> Contains official requirement descriptions for all 32 scholarship schemes.</li>
+        <li><strong>TF-IDF Vectorizer:</strong> Extracts n-gram token weights and sublinear term frequencies from criteria texts.</li>
+        <li><strong>Cosine Similarity:</strong> Calculates semantic alignment vectors between the student's profile narrative and each scholarship's guidelines.</li>
+      </ul>
+    </div>
+
+    <!-- Research Limitation Disclaimer -->
     <div class="detail-card" style="border: 1.5px solid var(--amber-500); background-color: var(--amber-50);">
-      <h2 class="detail-card-title" style="color: var(--amber-700); border-color: #fde68a;">3. Research & Data Limitations</h2>
+      <h2 class="detail-card-title" style="color: var(--amber-700); border-color: #fde68a;">4. Research & Data Limitations</h2>
       <p style="color: var(--slate-800); line-height: 1.7; margin-bottom: 1rem;">
-        <strong>Important Notice:</strong> The initial recommendation model uses the supplied synthetic student dataset and its existing scholarship target labels. These labels represent scholarship-match classifications in the dataset and should not be interpreted as actual probabilities of receiving a scholarship.
+        <strong>Important Notice:</strong> Recommendation scores represent scholarship-match classifications in the trained dataset and should not be interpreted as guaranteed probabilities of receiving a scholarship.
       </p>
       <p style="color: var(--slate-800); line-height: 1.7;">
-        Official eligibility constraints are handled independently through a rule-based eligibility engine. In future iterations, real-world anonymized tracking of applications, institutional quotas, and award outcomes will be utilized to continually train and refine the recommender.
+        Official statutory eligibility is verified through the hard rule engine. Final selection and award amounts remain subject to official provider verification and college approval.
       </p>
     </div>
 

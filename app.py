@@ -2,7 +2,7 @@ import os
 import secrets
 import logging
 from flask import Flask, render_template, request, redirect, url_for, session, flash, abort, jsonify
-from ml.model_loader import load_model, FEATURE_NAMES
+from ml.model_loader import load_system, FEATURE_NAMES
 from ml.predict import predict_scholarships
 from eligibility.eligibility_engine import (
     get_scholarships,
@@ -21,12 +21,12 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(32))
 
-# Pre-load ML model once on startup
+# Pre-load ML and NLP system once on startup
 try:
-    load_model()
-    logger.info("ML Model pre-loaded successfully during application initialization.")
+    load_system()
+    logger.info("Scholarship ML+NLP System pre-loaded successfully during application initialization.")
 except Exception as e:
-    logger.warning(f"Could not pre-load ML model at startup: {e}")
+    logger.warning(f"Could not pre-load scholarship system at startup: {e}")
 
 @app.template_filter("currency_inr")
 def currency_inr_filter(value):
@@ -52,10 +52,10 @@ def currency_inr_filter(value):
 
 @app.context_processor
 def inject_global_vars():
-    """Injects common context variables available in all Jinja templates."""
+    """Injects common context variables available in all Jinja templates (No personal name)."""
     return {
-        "app_name": "ScholarMatch",
-        "college_name": "College of Engineering",
+        "app_name": "PCCOE Scholarship Portal",
+        "college_name": "Pimpri Chinchwad College of Engineering",
         "current_year": 2026
     }
 
@@ -85,7 +85,7 @@ def recommend():
     Processes questionnaire submission:
     1. Validates form data & coerces data types
     2. Constructs student profile
-    3. Runs eligibility engine & ML predictions
+    3. Runs eligibility engine & ML + NLP predictions
     4. Stores lightweight student profile in session
     5. Redirects to /results
     """
@@ -182,15 +182,15 @@ def results():
         flash("Please complete the questionnaire first to view your recommendations.", "info")
         return redirect(url_for("questionnaire"))
 
-    # Step 1: Run ML predictions for supported scholarships
-    ml_scores = {}
+    # Step 1: Run ML + NLP AI predictions for supported scholarships
+    ai_scores = {}
     try:
-        ml_scores = predict_scholarships(student_profile)
+        ai_scores = predict_scholarships(student_profile)
     except Exception as e:
-        logger.error(f"ML Model prediction encountered error in /results: {e}")
+        logger.error(f"AI Model prediction encountered error in /results: {e}", exc_info=True)
 
     # Step 2: Evaluate hard eligibility and hybrid ranking
-    results_data = evaluate_and_rank_scholarships(student_profile, ml_scores)
+    results_data = evaluate_and_rank_scholarships(student_profile, ai_scores)
 
     eligible_scholarships = results_data.get("eligible", [])
     ineligible_scholarships = results_data.get("ineligible", [])
@@ -257,7 +257,7 @@ def scholarship_detail(scholarship_id):
 
 @app.route("/about")
 def about():
-    """Information regarding the recommendation engine, ML methodology, and research limitations."""
+    """Information regarding the recommendation engine, ML & NLP methodology, and research limitations."""
     return render_template("about.html")
 
 @app.errorhandler(404)

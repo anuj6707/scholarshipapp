@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AI/ML powered College Scholarship Recommendation and Eligibility Platform. Discover financial aid matched to your profile.">
-  <title>{% block title %}ScholarMatch | AI Scholarship Recommendation Platform{% endblock %}</title>
+  <meta name="description" content="AI/ML & NLP Powered College Scholarship Recommendation and Eligibility Platform. Discover scholarships matched to your student profile.">
+  <title>{% block title %}PCCOE Scholarship Portal | AI & NLP Recommendation System{% endblock %}</title>
   
   <!-- Custom Modern CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -17,10 +17,10 @@
   <header class="site-header">
     <div class="container navbar">
       <a href="{{ url_for('index') }}" class="brand-logo">
-        <div class="brand-icon">🎓</div>
+        <img src="{{ url_for('static', filename='images/pccoe_logo.png') }}" alt="PCCOE Logo" class="brand-logo-img">
         <div>
-          <span>{{ app_name }}</span>
-          <span class="brand-tagline">AI-Powered Scholarship Matching</span>
+          <span class="brand-title">{{ app_name }}</span>
+          <span class="brand-tagline">AI & NLP-Powered Scholarship Matching</span>
         </div>
       </a>
 
@@ -75,12 +75,15 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <h4>🎓 {{ app_name }}</h4>
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <img src="{{ url_for('static', filename='images/pccoe_logo.png') }}" alt="PCCOE Logo" style="height: 48px; width: 48px; object-fit: contain; border-radius: 50%; background: #ffffff; padding: 2px;">
+            <h4 style="margin: 0; color: #ffffff;">{{ app_name }}</h4>
+          </div>
           <p style="margin-bottom: 1rem; color: var(--slate-400);">
-            Empowering college engineering students to discover, verify eligibility, and apply directly to official scholarships through a hybrid AI/ML & rule-based engine.
+            Empowering engineering and technical students to discover, verify eligibility, and apply directly to official scholarships through a hybrid AI/ML & NLP criteria matching engine.
           </p>
           <p style="font-size: 0.8rem; color: var(--slate-500);">
-            Designed for undergraduate & technical students.
+            {{ college_name }}
           </p>
         </div>
 
@@ -89,8 +92,8 @@
           <ul class="footer-links">
             <li><a href="{{ url_for('index') }}">Home</a></li>
             <li><a href="{{ url_for('questionnaire') }}">Find Scholarships Wizard</a></li>
-            <li><a href="{{ url_for('scholarships_list') }}">Browse All 30+ Scholarships</a></li>
-            <li><a href="{{ url_for('about') }}">ML & Eligibility Methodology</a></li>
+            <li><a href="{{ url_for('scholarships_list') }}">Browse All Scholarships</a></li>
+            <li><a href="{{ url_for('about') }}">ML & NLP Methodology</a></li>
           </ul>
         </div>
 
@@ -106,7 +109,7 @@
       </div>
 
       <div class="footer-bottom">
-        <p>© {{ current_year }} {{ app_name }}. All scholarship details are sourced from verified official notifications. Independent eligibility engine.</p>
+        <p>© {{ current_year }} {{ app_name }}. Official scholarship criteria verified. Independent eligibility and recommendation system.</p>
       </div>
     </div>
   </footer>

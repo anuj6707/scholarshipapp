@@ -259,19 +259,17 @@ def calculate_rule_based_score(student: Dict[str, Any], scholarship: Dict[str, A
 
 def evaluate_and_rank_scholarships(
     student_profile: Dict[str, Any],
-    ml_scores: Optional[Dict[str, float]] = None
+    ai_scores: Optional[Dict[str, Any]] = None
 ) -> Dict[str, List[Dict[str, Any]]]:
     """
-    Main hybrid recommendation pipeline:
-    1. Evaluates hard eligibility for all scholarships in the database.
-    2. For eligible scholarships:
-       - Uses ML recommendation score if ML supported.
-       - Uses deterministic rule-based score if not ML supported.
-    3. Ranks eligible scholarships in descending order of recommendation score.
-    4. Gathers ineligible scholarships with clear failure reasons for user transparency.
+    Main hybrid recommendation pipeline combining:
+    1. Hard eligibility constraint validation.
+    2. ML model probability prediction.
+    3. NLP semantic text similarity on scholarship eligibility criteria.
+    4. Deterministic ranking for eligible scholarships.
     """
     all_scholarships = get_scholarships()
-    ml_scores = ml_scores or {}
+    ai_scores = ai_scores or {}
 
     eligible_list: List[Dict[str, Any]] = []
     ineligible_list: List[Dict[str, Any]] = []
@@ -282,18 +280,29 @@ def evaluate_and_rank_scholarships(
 
         sch_id = scholarship.get("id")
         eligibility = check_eligibility(student_profile, scholarship)
-        ml_key = scholarship.get("ml_target_key")
+        
+        score_info = ai_scores.get(sch_id, {})
+        if isinstance(score_info, (int, float)):
+            ml_score = float(score_info)
+            nlp_score = 0.0
+            rec_score = ml_score
+        elif isinstance(score_info, dict):
+            ml_score = float(score_info.get("ml_score", 0.50))
+            nlp_score = float(score_info.get("nlp_score", 0.0))
+            rec_score = float(score_info.get("recommendation_score", ml_score))
+        else:
+            ml_score = 0.0
+            nlp_score = 0.0
+            rec_score = calculate_rule_based_score(student_profile, scholarship, eligibility)
 
-        has_ml = bool(ml_key and sch_id in ml_scores)
+        has_ai = bool(sch_id in ai_scores)
 
         if eligibility["eligible"]:
-            if has_ml:
-                rec_score = ml_scores[sch_id]
-                match_type = "AI Recommended"
+            if has_ai:
+                match_type = "AI & NLP Matched"
                 match_badge = "ai-match"
-                explanation = "Ranked using Machine Learning model trained on student characteristics and award patterns."
+                explanation = "Ranked using Machine Learning predictive models and NLP semantic matching against criteria."
             else:
-                rec_score = calculate_rule_based_score(student_profile, scholarship, eligibility)
                 match_type = "Rule-based match"
                 match_badge = "rule-match"
                 explanation = "Ranked using deterministic eligibility rule fulfillment and academic-financial profile fit."
@@ -303,9 +312,12 @@ def evaluate_and_rank_scholarships(
                 "eligible": True,
                 "recommendation_score": rec_score,
                 "recommendation_score_pct": int(round(rec_score * 100)),
+                "ml_score_pct": int(round(ml_score * 100)),
+                "nlp_score_pct": int(round(nlp_score * 100)),
                 "match_type": match_type,
                 "match_badge": match_badge,
-                "has_ml_score": has_ml,
+                "has_ml_score": has_ai,
+                "has_nlp_score": nlp_score > 0,
                 "score_explanation": explanation,
                 "eligibility_reasons": eligibility["reasons"],
                 "failed_requirements": eligibility["failed_requirements"],
@@ -317,9 +329,12 @@ def evaluate_and_rank_scholarships(
                 "eligible": False,
                 "recommendation_score": 0.0,
                 "recommendation_score_pct": 0,
+                "ml_score_pct": 0,
+                "nlp_score_pct": int(round(nlp_score * 100)),
                 "match_type": "Ineligible",
                 "match_badge": "ineligible",
-                "has_ml_score": has_ml,
+                "has_ml_score": has_ai,
+                "has_nlp_score": nlp_score > 0,
                 "eligibility_reasons": eligibility["reasons"],
                 "failed_requirements": eligibility["failed_requirements"],
             }

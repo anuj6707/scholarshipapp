@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}ScholarMatch | Find Scholarships You're Eligible For{% endblock %}
+{% block title %}{{ app_name }} | Find Scholarships You're Eligible For{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -8,7 +8,7 @@
   <div class="container">
     <div class="hero-badge">
       <span>✨</span>
-      <span>Hybrid AI Recommendation & Rule-Based Eligibility Engine</span>
+      <span>AI/ML & NLP-Powered Scholarship Recommendation Engine</span>
     </div>
 
     <h1 class="hero-title">
@@ -16,7 +16,7 @@
     </h1>
 
     <p class="hero-subtitle">
-      Discover scholarships matched to your academic, financial and personal profile. Never miss financial aid opportunities tailored for your engineering degree.
+      Discover scholarships matched to your academic performance, financial background, and personal criteria. Specially designed for PCCOE engineering and technical students.
     </p>
 
     <div class="hero-cta-group">
@@ -39,12 +39,12 @@
         <div class="stat-label">Rule-Engine Checked</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">AI Powered</div>
-        <div class="stat-label">Recommendation Scoring</div>
+        <div class="stat-number">ML & NLP</div>
+        <div class="stat-label">Dual AI Scoring</div>
       </div>
       <div class="stat-item">
         <div class="stat-number">Direct</div>
-        <div class="stat-label">Official Application Links</div>
+        <div class="stat-label">Official Portal Links</div>
       </div>
     </div>
   </div>
@@ -55,42 +55,42 @@
   <div class="container">
     <div class="section-header">
       <span class="section-tag">Simple 4-Step Process</span>
-      <h2 class="section-title">How ScholarMatch Works</h2>
+      <h2 class="section-title">How It Works</h2>
       <p class="section-desc">
-        We eliminate guesswork and save hours of searching by combining hard eligibility checking with machine learning match ranking.
+        We eliminate guesswork by combining hard eligibility verification with machine learning match ranking and NLP criteria alignment.
       </p>
     </div>
 
     <div class="steps-grid">
       <div class="step-card">
         <div class="step-number">1</div>
-        <h3 class="step-title">Tell us about yourself</h3>
+        <h3 class="step-title">Enter Profile Details</h3>
         <p class="step-text">
-          Fill out a quick 5-step questionnaire covering your branch, academic marks, domicile, category, and family income.
+          Fill out a quick questionnaire covering your branch, academic marks, domicile, category, and family income.
         </p>
       </div>
 
       <div class="step-card">
         <div class="step-number">2</div>
-        <h3 class="step-title">AI analyzes your profile</h3>
+        <h3 class="step-title">AI & NLP Model Analysis</h3>
         <p class="step-text">
-          Our eligibility engine validates official requirements while the ML model scores scholarship affinity and fit.
+          Our eligibility engine validates official criteria, ML models predict fit, and TF-IDF matches criteria text.
         </p>
       </div>
 
       <div class="step-card">
         <div class="step-number">3</div>
-        <h3 class="step-title">Discover matching scholarships</h3>
+        <h3 class="step-title">Discover Matches</h3>
         <p class="step-text">
-          Review your personalized recommendations ranked by score, with clear explanations of why you qualify.
+          Review personalized recommendations ranked by AI match score, with clear explanations of why you qualify.
         </p>
       </div>
 
       <div class="step-card">
         <div class="step-number">4</div>
-        <h3 class="step-title">Apply directly</h3>
+        <h3 class="step-title">Apply on Official Portals</h3>
         <p class="step-text">
-          Access complete document checklists, deadline notifications, and 1-click links to official application portals.
+          Access complete document checklists, deadline details, and direct links to official scholarship application portals.
         </p>
       </div>
     </div>
@@ -113,11 +113,7 @@
         <div class="scholarship-card">
           <div class="card-top">
             <div class="card-badge-row">
-              {% if sch.ml_target_key %}
-                <span class="badge badge-ai">⚡ AI Supported</span>
-              {% else %}
-                <span class="badge badge-rule">📋 Rule Match</span>
-              {% endif %}
+              <span class="badge badge-ai">⚡ AI & NLP Scored</span>
               <span style="font-size: 0.8rem; color: var(--slate-500); font-weight: 600;">
                 📅 Deadline: {{ sch.deadline }}
               </span>

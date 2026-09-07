@@ -46,9 +46,9 @@ class TestFlaskRoutes(unittest.TestCase):
         # Follow redirect to /results
         get_res = self.client.get("/results")
         self.assertEqual(get_res.status_code, 200)
-        self.assertIn(b"Your Scholarship Matches", get_res.data)
+        self.assertIn(b"Your Scholarship Recommendations", get_res.data)
         self.assertIn(b"Cummins Scholarship", get_res.data)
-        self.assertIn(b"Recommendation Score", get_res.data)
+        self.assertIn(b"ML Fit", get_res.data)
 
     def test_4_invalid_recommendation_handling(self):
         # Missing required fields
@@ -85,7 +85,7 @@ class TestFlaskRoutes(unittest.TestCase):
     def test_8_about_page(self):
         res = self.client.get("/about")
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b"How ScholarMatch Works", res.data)
+        self.assertIn(b"How PCCOE Scholarship Portal Works", res.data)
         self.assertIn(b"Hybrid Recommendation Architecture", res.data)
         self.assertIn(b"Research & Data Limitations", res.data)
 
