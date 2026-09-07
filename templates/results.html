@@ -11,7 +11,7 @@
         <span class="section-tag">Match Results</span>
         <h1 style="font-size: 2.25rem; margin-bottom: 0.5rem;">Your Scholarship Recommendations</h1>
         <p style="color: var(--slate-600); font-size: 1.1rem;">
-          We evaluated <strong>{{ total_evaluated }} scholarships</strong> using our unified AI/ML model and NLP criteria matcher, finding 
+          We evaluated <strong>{{ total_evaluated }} scholarships</strong> using our multi-target Machine Learning models and verified 
           <strong style="color: var(--accent-700);">{{ eligible | length }} matching opportunities</strong>.
         </p>
       </div>
@@ -89,7 +89,7 @@
         <div class="card-top">
           <div class="card-badge-row">
             <span class="badge badge-eligible">🟢 Eligible</span>
-            <span class="badge badge-ai">⚡ AI & NLP Scored</span>
+            <span class="badge badge-ai">⚡ AI Scored</span>
           </div>
 
           <h3 class="sch-title">{{ sch.name }}</h3>
@@ -101,15 +101,9 @@
               <p class="sch-benefit">{{ sch.benefit_type }}</p>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 0.35rem; align-items: flex-end;">
-              <div class="score-pill" style="background-color: #ecfdf5; color: #047857; border-color: #a7f3d0; font-size: 0.95rem;" title="Unified Recommendation Score blending ML probability and NLP criteria alignment">
-                <span>⚡ AI Match:</span>
-                <strong>{{ sch.recommendation_score_pct }}%</strong>
-              </div>
-              <div style="display: flex; gap: 0.35rem; font-size: 0.75rem;">
-                <span class="score-pill ml-pill" style="padding: 0.15rem 0.4rem; font-size: 0.725rem;" title="Machine Learning Random Forest Fit Score">ML: {{ sch.ml_score_pct }}%</span>
-                <span class="score-pill nlp-pill" style="padding: 0.15rem 0.4rem; font-size: 0.725rem;" title="NLP Semantic Criteria Fit Score">NLP: {{ sch.nlp_score_pct }}%</span>
-              </div>
+            <div class="score-pill" style="background-color: #ecfdf5; color: #047857; border-color: #a7f3d0; font-size: 0.95rem;" title="AI Machine Learning Recommendation Score based on student characteristics">
+              <span>⚡ Match Score:</span>
+              <strong>{{ sch.recommendation_score_pct }}%</strong>
             </div>
           </div>
         </div>

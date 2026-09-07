@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 from ml.model_loader import get_system, FEATURE_NAMES, SCHOLARSHIP_ID_TO_TARGET
-from ml.predict import format_and_engineer_features, build_student_profile_text, predict_scholarships
+from ml.predict import format_and_engineer_features, predict_scholarships
 
 class TestMLPrediction(unittest.TestCase):
     def setUp(self):
@@ -26,10 +26,10 @@ class TestMLPrediction(unittest.TestCase):
         self.assertIsNotNone(sys_obj)
         self.assertIn("preprocessor", sys_obj)
         self.assertIn("ml_models", sys_obj)
-        self.assertIn("tfidf", sys_obj)
-        self.assertIn("criteria_vectors", sys_obj)
-        self.assertIn("criteria_df", sys_obj)
+        self.assertIn("target_columns", sys_obj)
+        self.assertIn("feature_columns", sys_obj)
         self.assertEqual(len(sys_obj["ml_models"]), 32)
+        self.assertGreaterEqual(sys_obj.get("average_accuracy", 0.90), 0.85)
 
     def test_format_and_engineer_features(self):
         sys_obj = get_system()
@@ -44,13 +44,6 @@ class TestMLPrediction(unittest.TestCase):
         self.assertEqual(df["high_academic_performer"].iloc[0], 1)
         self.assertEqual(df["academic_score"].iloc[0], (8.5 * 10 + 88.0) / 2.0)
 
-    def test_build_student_profile_text(self):
-        text = build_student_profile_text(self.valid_student)
-        self.assertIsInstance(text, str)
-        self.assertIn("Female", text)
-        self.assertIn("Computer Engineering", text)
-        self.assertIn("Maharashtra", text)
-
     def test_predict_scholarships(self):
         scores = predict_scholarships(self.valid_student)
         self.assertIsInstance(scores, dict)
@@ -62,12 +55,11 @@ class TestMLPrediction(unittest.TestCase):
 
         for sch_id, score_data in scores.items():
             self.assertIn("ml_score", score_data)
-            self.assertIn("nlp_score", score_data)
             self.assertIn("recommendation_score", score_data)
             self.assertGreaterEqual(score_data["ml_score"], 0.0)
             self.assertLessEqual(score_data["ml_score"], 1.0)
-            self.assertGreaterEqual(score_data["nlp_score"], 0.0)
-            self.assertLessEqual(score_data["nlp_score"], 1.0)
+            self.assertGreaterEqual(score_data["recommendation_score"], 0.0)
+            self.assertLessEqual(score_data["recommendation_score"], 1.0)
 
 if __name__ == "__main__":
     unittest.main()
