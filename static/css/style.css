@@ -794,12 +794,6 @@ a:hover {
   border: 1px solid #e9d5ff;
 }
 
-.badge-nlp {
-  background-color: #ecfeff;
-  color: #0e7490;
-  border: 1px solid #cffafe;
-}
-
 .badge-rule {
   background-color: var(--primary-50);
   color: var(--primary-700);
@@ -827,12 +821,6 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-}
-
-.score-pill.nlp-pill {
-  background-color: #ecfeff;
-  color: #0e7490;
-  border-color: #a5f3fc;
 }
 
 .score-pill.ml-pill {

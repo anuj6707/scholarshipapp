@@ -63,7 +63,7 @@ FEATURE_NAMES = [
 
 def load_system(model_path: str = None):
     """
-    Loads and returns the combined ML & NLP scholarship system dictionary.
+    Loads and returns the combined ML scholarship system dictionary.
     Loaded once as a singleton at application startup.
     """
     global _SYSTEM_OBJ
@@ -76,7 +76,7 @@ def load_system(model_path: str = None):
 
     try:
         _SYSTEM_OBJ = joblib.load(path)
-        logger.info(f"Scholarship NLP+ML system successfully loaded from {path}")
+        logger.info(f"Scholarship ML system successfully loaded from {path}")
         return _SYSTEM_OBJ
     except Exception as e:
         logger.error(f"Failed to load scholarship system from {path}: {e}")

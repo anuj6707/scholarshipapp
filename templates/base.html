@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AI/ML & NLP Powered College Scholarship Recommendation and Eligibility Platform. Discover scholarships matched to your student profile.">
-  <title>{% block title %}PCCOE Scholarship Portal | AI & NLP Recommendation System{% endblock %}</title>
+  <meta name="description" content="AI/ML-Powered College Scholarship Recommendation and Eligibility Platform. Discover scholarships matched to your student profile.">
+  <title>{% block title %}PCCOE Scholarship Portal | AI Recommendation System{% endblock %}</title>
   
   <!-- Custom Modern CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -20,7 +20,7 @@
         <img src="{{ url_for('static', filename='images/pccoe_logo.png') }}" alt="PCCOE Logo" class="brand-logo-img">
         <div>
           <span class="brand-title">{{ app_name }}</span>
-          <span class="brand-tagline">AI & NLP-Powered Scholarship Matching</span>
+          <span class="brand-tagline">AI & ML-Powered Scholarship Matching</span>
         </div>
       </a>
 
@@ -80,7 +80,7 @@
             <h4 style="margin: 0; color: #ffffff;">{{ app_name }}</h4>
           </div>
           <p style="margin-bottom: 1rem; color: var(--slate-400);">
-            Empowering engineering and technical students to discover, verify eligibility, and apply directly to official scholarships through a hybrid AI/ML & NLP criteria matching engine.
+            Empowering engineering and technical students to discover, verify eligibility, and apply directly to official scholarships through a hybrid AI/ML criteria matching engine.
           </p>
           <p style="font-size: 0.8rem; color: var(--slate-500);">
             {{ college_name }}
@@ -93,7 +93,7 @@
             <li><a href="{{ url_for('index') }}">Home</a></li>
             <li><a href="{{ url_for('questionnaire') }}">Find Scholarships Wizard</a></li>
             <li><a href="{{ url_for('scholarships_list') }}">Browse All Scholarships</a></li>
-            <li><a href="{{ url_for('about') }}">ML & NLP Methodology</a></li>
+            <li><a href="{{ url_for('about') }}">Machine Learning Methodology</a></li>
           </ul>
         </div>
 

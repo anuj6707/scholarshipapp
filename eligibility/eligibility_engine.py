@@ -255,7 +255,7 @@ def calculate_rule_based_score(student: Dict[str, Any], scholarship: Dict[str, A
     if branches and "All" not in branches:
         score += 0.04
 
-    return round(min(score, 0.95), 4)
+    return round(min(score, 0.92), 4)
 
 def evaluate_and_rank_scholarships(
     student_profile: Dict[str, Any],
@@ -295,9 +295,11 @@ def evaluate_and_rank_scholarships(
         has_ml = bool(sch_id in ai_scores)
 
         if eligibility["eligible"]:
-            # If the student is fully eligible, ensure a strong baseline (minimum 70% if predicted low due to sample sparsity)
-            effective_rec_score = max(rec_score, 0.70) if has_ml else rec_score
-            rec_pct = int(round(effective_rec_score * 100))
+            # If the student is fully eligible, ensure a realistic match score strictly capped at 95% (never 100%)
+            raw_val = min(rec_score, 0.95)
+            effective_rec_score = max(raw_val, 0.68) if has_ml else raw_val
+            # Ensure percentage stays strictly within realistic range (70% - 95%)
+            rec_pct = min(int(round(effective_rec_score * 100)), 95)
 
             match_type = "AI Recommended"
             match_badge = "ai-match"
@@ -337,6 +339,17 @@ def evaluate_and_rank_scholarships(
         key=lambda x: (x["recommendation_score"], x.get("maximum_amount") or 0),
         reverse=True
     )
+
+    # Stagger tied high scores for realistic diversity (e.g. 95%, 94%, 93%, 92%, etc., never exceeding 95%)
+    seen_scores: Dict[int, int] = {}
+    for item in eligible_list:
+        raw_pct = item["recommendation_score_pct"]
+        dup_count = seen_scores.get(raw_pct, 0)
+        seen_scores[raw_pct] = dup_count + 1
+        if dup_count > 0 and raw_pct >= 75:
+            differentiated_pct = max(raw_pct - dup_count, 70)
+            item["recommendation_score_pct"] = differentiated_pct
+            item["ml_score_pct"] = differentiated_pct
 
     return {
         "eligible": eligible_list,

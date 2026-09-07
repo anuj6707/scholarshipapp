@@ -21,10 +21,10 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(32))
 
-# Pre-load ML and NLP system once on startup
+# Pre-load ML recommendation system once on startup
 try:
     load_system()
-    logger.info("Scholarship ML+NLP System pre-loaded successfully during application initialization.")
+    logger.info("Scholarship ML System pre-loaded successfully during application initialization.")
 except Exception as e:
     logger.warning(f"Could not pre-load scholarship system at startup: {e}")
 
@@ -85,7 +85,7 @@ def recommend():
     Processes questionnaire submission:
     1. Validates form data & coerces data types
     2. Constructs student profile
-    3. Runs eligibility engine & ML + NLP predictions
+    3. Runs eligibility engine & Machine Learning predictions
     4. Stores lightweight student profile in session
     5. Redirects to /results
     """
@@ -182,7 +182,7 @@ def results():
         flash("Please complete the questionnaire first to view your recommendations.", "info")
         return redirect(url_for("questionnaire"))
 
-    # Step 1: Run ML + NLP AI predictions for supported scholarships
+    # Step 1: Run Machine Learning predictions for supported scholarships
     ai_scores = {}
     try:
         ai_scores = predict_scholarships(student_profile)
@@ -257,7 +257,7 @@ def scholarship_detail(scholarship_id):
 
 @app.route("/about")
 def about():
-    """Information regarding the recommendation engine, ML & NLP methodology, and research limitations."""
+    """Information regarding the recommendation engine, Machine Learning methodology, and research limitations."""
     return render_template("about.html")
 
 @app.errorhandler(404)

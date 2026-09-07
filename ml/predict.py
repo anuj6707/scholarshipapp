@@ -182,7 +182,9 @@ def predict_scholarships(student_profile: Dict[str, Any]) -> Dict[str, Dict[str,
                     proba = float(model.classes_[0])
                 else:
                     proba = float(model.predict(X_proc)[0])
-                ml_raw_scores[target] = round(proba, 4)
+                # Cap score to realistic 0.95 max so it never outputs 100% match
+                capped_proba = min(proba, 0.95)
+                ml_raw_scores[target] = round(capped_proba, 4)
             except Exception as e:
                 logger.warning(f"Error predicting target {target}: {e}")
                 ml_raw_scores[target] = 0.70
@@ -190,7 +192,7 @@ def predict_scholarships(student_profile: Dict[str, Any]) -> Dict[str, Dict[str,
     # 3. Map target keys to scholarship IDs
     results: Dict[str, Dict[str, float]] = {}
     for sch_id, target_key in SCHOLARSHIP_ID_TO_TARGET.items():
-        score = ml_raw_scores.get(target_key, 0.70)
+        score = min(ml_raw_scores.get(target_key, 0.70), 0.95)
         results[sch_id] = {
             "ml_score": score,
             "recommendation_score": score
