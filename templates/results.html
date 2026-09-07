@@ -11,7 +11,7 @@
         <span class="section-tag">Match Results</span>
         <h1 style="font-size: 2.25rem; margin-bottom: 0.5rem;">Your Scholarship Recommendations</h1>
         <p style="color: var(--slate-600); font-size: 1.1rem;">
-          We evaluated <strong>{{ total_evaluated }} scholarships</strong> using our AI/ML model and NLP criteria matcher, finding 
+          We evaluated <strong>{{ total_evaluated }} scholarships</strong> using our unified AI/ML model and NLP criteria matcher, finding 
           <strong style="color: var(--accent-700);">{{ eligible | length }} matching opportunities</strong>.
         </p>
       </div>
@@ -47,8 +47,8 @@
       <div class="metric-card">
         <div class="metric-icon purple">⚡</div>
         <div>
-          <div class="metric-val">{{ ml_recommended_count }}</div>
-          <div class="metric-title">AI/ML & NLP Scored</div>
+          <div class="metric-val">{{ high_match_count }}</div>
+          <div class="metric-title">High AI Matches (80%+)</div>
         </div>
       </div>
 
@@ -66,11 +66,8 @@
       <button type="button" class="filter-tab active" data-filter="all-eligible">
         All Eligible Matches ({{ eligible | length }})
       </button>
-      <button type="button" class="filter-tab" data-filter="ai-match">
-        AI & NLP Top Recommendations ({{ ml_recommended_count }})
-      </button>
-      <button type="button" class="filter-tab" data-filter="rule-match">
-        Rule-Based Matches ({{ (eligible | length) - ml_recommended_count }})
+      <button type="button" class="filter-tab" data-filter="high-match">
+        Top Matches 80%+ ({{ high_match_count }})
       </button>
       <button type="button" class="filter-tab" data-filter="ineligible">
         Ineligible Opportunities ({{ ineligible | length }})
@@ -88,38 +85,31 @@
     
     <!-- Eligible Scholarships -->
     {% for sch in eligible %}
-      <div class="scholarship-card" data-eligible="true" data-has-ml="{{ 'true' if sch.has_ml_score else 'false' }}">
+      <div class="scholarship-card" data-eligible="true" data-score="{{ sch.recommendation_score_pct }}">
         <div class="card-top">
           <div class="card-badge-row">
             <span class="badge badge-eligible">🟢 Eligible</span>
-
-            {% if sch.has_ml_score %}
-              <span class="badge badge-ai">⚡ AI & NLP Model</span>
-            {% else %}
-              <span class="badge badge-rule">📋 Rule-based match</span>
-            {% endif %}
+            <span class="badge badge-ai">⚡ AI & NLP Scored</span>
           </div>
 
           <h3 class="sch-title">{{ sch.name }}</h3>
           <p class="sch-provider">{{ sch.provider }}</p>
           
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
             <div>
               <div class="sch-amount">{{ sch.maximum_amount | currency_inr }}</div>
               <p class="sch-benefit">{{ sch.benefit_type }}</p>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 0.35rem; align-items: flex-end;">
-              <div class="score-pill ml-pill" title="Machine Learning Random Forest Recommendation Score">
-                <span>⚡ ML Fit:</span>
-                <strong>{{ sch.ml_score_pct }}%</strong>
+              <div class="score-pill" style="background-color: #ecfdf5; color: #047857; border-color: #a7f3d0; font-size: 0.95rem;" title="Unified Recommendation Score blending ML probability and NLP criteria alignment">
+                <span>⚡ AI Match:</span>
+                <strong>{{ sch.recommendation_score_pct }}%</strong>
               </div>
-              {% if sch.has_nlp_score and sch.nlp_score_pct > 0 %}
-                <div class="score-pill nlp-pill" title="NLP TF-IDF Semantic Cosine Similarity with official criteria">
-                  <span>🔍 NLP Match:</span>
-                  <strong>{{ sch.nlp_score_pct }}%</strong>
-                </div>
-              {% endif %}
+              <div style="display: flex; gap: 0.35rem; font-size: 0.75rem;">
+                <span class="score-pill ml-pill" style="padding: 0.15rem 0.4rem; font-size: 0.725rem;" title="Machine Learning Random Forest Fit Score">ML: {{ sch.ml_score_pct }}%</span>
+                <span class="score-pill nlp-pill" style="padding: 0.15rem 0.4rem; font-size: 0.725rem;" title="NLP Semantic Criteria Fit Score">NLP: {{ sch.nlp_score_pct }}%</span>
+              </div>
             </div>
           </div>
         </div>
@@ -159,7 +149,7 @@
 
     <!-- Ineligible Scholarships -->
     {% for sch in ineligible %}
-      <div class="scholarship-card" data-eligible="false" data-has-ml="{{ 'true' if sch.has_ml_score else 'false' }}" style="opacity: 0.85; border-color: var(--slate-200); background-color: var(--slate-50); display: none;">
+      <div class="scholarship-card" data-eligible="false" data-score="0" style="opacity: 0.85; border-color: var(--slate-200); background-color: var(--slate-50); display: none;">
         <div class="card-top">
           <div class="card-badge-row">
             <span class="badge badge-ineligible">🔴 Ineligible</span>

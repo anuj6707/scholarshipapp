@@ -48,7 +48,7 @@ class TestFlaskRoutes(unittest.TestCase):
         self.assertEqual(get_res.status_code, 200)
         self.assertIn(b"Your Scholarship Recommendations", get_res.data)
         self.assertIn(b"Cummins Scholarship", get_res.data)
-        self.assertIn(b"ML Fit", get_res.data)
+        self.assertIn(b"AI Match", get_res.data)
 
     def test_4_invalid_recommendation_handling(self):
         # Missing required fields

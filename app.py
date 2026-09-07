@@ -201,8 +201,8 @@ def results():
         s.get("maximum_amount") or 0 for s in eligible_scholarships
     )
 
-    ml_recommended_count = sum(
-        1 for s in eligible_scholarships if s.get("has_ml_score")
+    high_match_count = sum(
+        1 for s in eligible_scholarships if (s.get("recommendation_score_pct") or 0) >= 80
     )
 
     return render_template(
@@ -212,7 +212,7 @@ def results():
         ineligible=ineligible_scholarships,
         total_evaluated=total_evaluated,
         total_potential_benefit=total_potential_benefit,
-        ml_recommended_count=ml_recommended_count
+        high_match_count=high_match_count
     )
 
 @app.route("/scholarships")

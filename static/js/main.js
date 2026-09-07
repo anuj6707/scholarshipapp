@@ -1,5 +1,5 @@
 /**
- * ScholarMatch - Main Application Client Interactions
+ * PCCOE Scholarship Portal - Main Application Client Interactions
  * Vanilla JavaScript (No frameworks)
  */
 
@@ -17,14 +17,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       scholarshipCards.forEach((card) => {
         const isEligible = card.getAttribute("data-eligible") === "true";
-        const hasMl = card.getAttribute("data-has-ml") === "true";
+        const score = parseInt(card.getAttribute("data-score") || "0", 10);
 
         if (filterValue === "all-eligible") {
           card.style.display = isEligible ? "flex" : "none";
-        } else if (filterValue === "ai-match") {
-          card.style.display = isEligible && hasMl ? "flex" : "none";
-        } else if (filterValue === "rule-match") {
-          card.style.display = isEligible && !hasMl ? "flex" : "none";
+        } else if (filterValue === "high-match") {
+          card.style.display = isEligible && score >= 80 ? "flex" : "none";
         } else if (filterValue === "ineligible") {
           card.style.display = !isEligible ? "flex" : "none";
         } else if (filterValue === "all") {
