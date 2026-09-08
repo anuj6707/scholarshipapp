@@ -10,7 +10,7 @@ LINK TO LOVE PROJECT :https://scholarshipapp-uauv.onrender.com
 
 1. **Hybrid AI & Rule-Based Recommendation Engine**:
    - **Hard Eligibility Engine**: Evaluates strict statutory constraints (gender exclusivity, branch, year of study, CGPA, qualifying percentage, income ceiling, domicile, hostel residency, PwD disability percentage, BPL status). Rule verification strictly takes precedence over ML scores to prevent ineligible recommendations.
-   - **ML Recommendation Pipeline**: Calibrated `XGBoost` MultiOutput probability scoring for the 8 primary ML target scholarships.
+   - **ML Recommendation Pipeline**: Comparative evaluation of `Logistic Regression`, `RandomForest`, and `XGBoost` classifiers for all 32 scholarship targets, with per-scholarship best model selection via 5-fold stratified CV.
    - **Transparent Rule-Based Scoring**: High-precision deterministic scoring for 25+ additional scholarships not present in the training targets.
 
 2. **5-Step Interactive Questionnaire Wizard**:
@@ -59,57 +59,60 @@ beautiful-hubble/
 ├── .env.example               # Environment variables template
 │
 ├── ml/
-│   ├── scholarship_system.pkl # Lightweight trained multi-target ML system (~1.6 MB)
-│   ├── model_loader.py        # Singleton model loader (loaded once at startup)
-│   ├── predict.py             # Feature engineering & recommendation scoring
-│   └── train_and_evaluate.py  # Model training & validation script
+│   ├── scholarship_system.pkl  # Trained multi-model ML artifact (compressed)
+│   ├── model_loader.py         # Singleton model loader (loaded once at startup)
+│   ├── predict.py              # Inference: feature engineering → preprocess → predict
+│   ├── features.py             # Shared constants & single authoritative engineer_features()
+│   ├── pipeline.py             # Comparative training pipeline (LR, RF, XGBoost)
+│   ├── model_comparison.csv    # Full CV + test results comparison table
+│   └── feature_importance.csv  # Top feature importances per scholarship
 │
 ├── data/
-│   ├── scholarship_dataset.csv# Enriched 5,000 student training & evaluation dataset
-│   └── scholarships.json      # 32+ comprehensive scholarship database
+│   ├── scholarship_dataset.csv # 5,000 students × 45 columns (13 raw + 32 targets)
+│   └── scholarships.json       # 32+ comprehensive scholarship database
 │
 ├── eligibility/
 │   ├── __init__.py
-│   └── eligibility_engine.py  # Hard eligibility constraint rules & ML ranking
+│   └── eligibility_engine.py   # Hard eligibility constraint rules & ML ranking
 │
 ├── templates/
-│   ├── base.html              # Base layout with PCCOE branding, navbar & footer
-│   ├── index.html             # Landing page with hero & 4-step workflow
-│   ├── questionnaire.html     # 5-step multi-step questionnaire wizard
-│   ├── results.html           # Recommendation matches & filter dashboard
-│   ├── scholarships.html      # Searchable & filterable scholarship directory
-│   ├── scholarship_detail.html# Comprehensive scholarship view & official apply button
-│   ├── about.html             # Methodology & research limitations
-│   ├── 404.html               # Custom 404 Not Found page
-│   └── 500.html               # Custom 500 Server Error page
+│   ├── base.html               # Base layout with PCCOE branding, navbar & footer
+│   ├── index.html              # Landing page with hero & 4-step workflow
+│   ├── questionnaire.html      # 5-step multi-step questionnaire wizard
+│   ├── results.html            # Recommendation matches & filter dashboard
+│   ├── scholarships.html       # Searchable & filterable scholarship directory
+│   ├── scholarship_detail.html # Comprehensive scholarship view & official apply button
+│   ├── about.html              # Methodology & research limitations
+│   ├── 404.html                # Custom 404 Not Found page
+│   └── 500.html                # Custom 500 Server Error page
 │
 ├── static/
 │   ├── css/
-│   │   └── style.css          # Custom responsive CSS design system
+│   │   └── style.css           # Custom responsive CSS design system
 │   ├── images/
-│   │   └── pccoe_logo.png     # PCCOE institutional crest logo
+│   │   └── pccoe_logo.png      # PCCOE institutional crest logo
 │   └── js/
-│       ├── questionnaire.js   # Multi-step wizard navigation & live validation
-│       └── main.js            # Directory search, filter tabs & interaction
+│       ├── questionnaire.js    # Multi-step wizard navigation & live validation
+│       └── main.js             # Directory search, filter tabs & interaction
 │
 └── tests/
-    ├── test_eligibility.py    # Unit tests for statutory eligibility rules
-    ├── test_prediction.py     # Unit tests for ML feature formatting & inference
-    └── test_routes.py         # End-to-end route & integration test suite
+    ├── test_eligibility.py     # Unit tests for statutory eligibility rules
+    ├── test_prediction.py      # Unit tests for ML feature engineering & inference
+    └── test_routes.py          # End-to-end route & integration test suite
 ```
 
 ---
 
-## 🤖 ML Architecture & Feature Engineering
+## 🤖 ML Architecture & Comparative Pipeline
 
-- **Model Architecture**: 32 Dedicated Fast `RandomForestClassifier` estimators with calibrated probability outputs.
-- **Model Size**: Compact ~1.64 MB (optimized for sub-millisecond inference and fast cold starts).
-- **Enriched Feature Engineering (27 features)**:
-  - 13 base profile attributes (academics, income, demographics, inclusion).
-  - 14 engineered features (`academic_score`, `merit_percentile`, `financial_hardship_score`, `need_merit_interaction`, `stem_branch`, `college_progress`, etc.).
-- **Evaluation Metrics**:
-  - Realistic Average Accuracy: **~95% - 98%** across all 32 scholarship schemes.
-  - Average ROC-AUC: **~99.8%**.
+- **Approach**: Comparative evaluation of **Logistic Regression**, **Random Forest**, and **XGBoost** per scholarship target.
+- **Validation**: 5-fold Stratified Cross-Validation with F1 as primary selection metric.
+- **Feature Engineering**: 16 derived features computed dynamically from 13 raw attributes (never stored in CSV).
+- **PCA Experiments**: Each model tested with and without PCA (95% variance retention).
+- **Threshold Optimization**: Per-scholarship thresholds tuned on CV predictions only, frozen before test evaluation.
+- **Preprocessing**: StandardScaler + OneHotEncoder, fitted inside each CV fold (no data leakage).
+- **Model Selection**: Best model per scholarship selected by mean CV F1 score.
+- **Final Evaluation**: Selected models retrained on full 80% training set, evaluated once on held-out 20% test set.
 
 ---
 
@@ -142,10 +145,10 @@ pip install -r requirements.txt
 copy .env.example .env
 ```
 
-### 5. Run Inspection (Optional)
-To verify your model and dataset structure:
+### 5. Retrain Models (Optional)
+To retrain the comparative ML pipeline:
 ```bash
-python ml/inspect_model.py
+python ml/pipeline.py
 ```
 
 ### 6. Run the Test Suite

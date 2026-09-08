@@ -30,14 +30,16 @@
 
     <!-- Machine Learning Model Card -->
     <div class="detail-card">
-      <h2 class="detail-card-title">2. Machine Learning Predictive Pipeline (&gt;94% Average Accuracy)</h2>
+      <h2 class="detail-card-title">2. Comparative Machine Learning Pipeline</h2>
       <p style="color: var(--slate-700); line-height: 1.7; margin-bottom: 1rem;">
-        Our ML system is built with <code>scikit-learn</code> with full coverage across all 32 scholarship targets:
+        Our ML system uses a rigorous comparative evaluation pipeline built with <code>scikit-learn</code> and <code>XGBoost</code> across all 32 scholarship targets:
       </p>
       <ul style="list-style: disc; padding-left: 1.5rem; color: var(--slate-700); line-height: 1.7; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
-        <li><strong>Feature Engineering:</strong> Computes 9 domain-specific derived indicators including <code>academic_score</code>, <code>financial_need</code>, <code>high_academic_performer</code>, <code>is_first_year</code>, <code>is_pwd</code>, <code>high_disability</code>, <code>need_and_merit</code>, <code>log_income</code>, and <code>college_progress</code>.</li>
-        <li><strong>Pipeline Preprocessor:</strong> <code>ColumnTransformer</code> with median imputation and <code>StandardScaler</code> for 15 numerical features, and mode imputation with <code>OneHotEncoder</code> for 7 categorical attributes.</li>
-        <li><strong>Tuned Classifiers:</strong> 32 dedicated <code>RandomForestClassifier</code> models achieving <strong>94.31% average accuracy</strong> and <strong>97.23% average ROC-AUC</strong> across test benchmarks.</li>
+        <li><strong>Feature Engineering:</strong> Computes 16 domain-specific derived indicators from 13 raw student attributes, including <code>academic_score</code>, <code>financial_need</code>, <code>merit_percentile</code>, <code>financial_hardship_score</code>, and interaction features.</li>
+        <li><strong>Model Comparison:</strong> Evaluates <code>Logistic Regression</code>, <code>Random Forest</code>, and <code>XGBoost</code> per scholarship target, selecting the best model based on 5-fold stratified cross-validation F1 score.</li>
+        <li><strong>PCA Experiments:</strong> Tests models with and without Principal Component Analysis (95% variance retention) to determine optimal dimensionality.</li>
+        <li><strong>Threshold Optimization:</strong> Per-scholarship classification thresholds are tuned on cross-validation predictions only, never on the held-out test set.</li>
+        <li><strong>Preprocessing:</strong> <code>StandardScaler</code> for 22 numerical features and <code>OneHotEncoder</code> for 7 categorical attributes, fitted inside each CV fold to prevent data leakage.</li>
       </ul>
     </div>
 
