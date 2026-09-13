@@ -37,12 +37,12 @@ MODELS = [
     ("LR_C0.1_bal",   lambda: LogisticRegression(C=0.1, class_weight='balanced', max_iter=1000, random_state=42)),
     ("LR_C1_bal",     lambda: LogisticRegression(C=1, class_weight='balanced', max_iter=1000, random_state=42)),
     ("LR_C10",        lambda: LogisticRegression(C=10, max_iter=1000, random_state=42)),
-    ("RF_100_d8_bal",  lambda: RandomForestClassifier(n_estimators=100, max_depth=8, class_weight='balanced', min_samples_leaf=2, random_state=42, n_jobs=-1)),
-    ("RF_200_bal",     lambda: RandomForestClassifier(n_estimators=200, class_weight='balanced', min_samples_leaf=2, random_state=42, n_jobs=-1)),
-    ("RF_100",         lambda: RandomForestClassifier(n_estimators=100, max_depth=8, min_samples_leaf=2, random_state=42, n_jobs=-1)),
-    ("XGB_100_d3",     lambda: XGBClassifier(n_estimators=100, max_depth=3, learning_rate=0.1, random_state=42, n_jobs=-1, eval_metric='logloss')),
-    ("XGB_100_d5",     lambda: XGBClassifier(n_estimators=100, max_depth=5, learning_rate=0.1, random_state=42, n_jobs=-1, eval_metric='logloss')),
-    ("XGB_200_d5",     lambda: XGBClassifier(n_estimators=200, max_depth=5, learning_rate=0.05, random_state=42, n_jobs=-1, eval_metric='logloss')),
+    ("RF_100_d8_bal",  lambda: RandomForestClassifier(n_estimators=100, max_depth=8, class_weight='balanced', min_samples_leaf=2, random_state=42, n_jobs=1)),
+    ("RF_200_bal",     lambda: RandomForestClassifier(n_estimators=100, max_depth=10, class_weight='balanced', min_samples_leaf=2, random_state=42, n_jobs=1)),
+    ("RF_100",         lambda: RandomForestClassifier(n_estimators=100, max_depth=8, min_samples_leaf=2, random_state=42, n_jobs=1)),
+    ("XGB_100_d3",     lambda: XGBClassifier(n_estimators=100, max_depth=3, learning_rate=0.1, random_state=42, n_jobs=1, eval_metric='logloss')),
+    ("XGB_100_d5",     lambda: XGBClassifier(n_estimators=100, max_depth=5, learning_rate=0.1, random_state=42, n_jobs=1, eval_metric='logloss')),
+    ("XGB_200_d5",     lambda: XGBClassifier(n_estimators=200, max_depth=5, learning_rate=0.05, random_state=42, n_jobs=1, eval_metric='logloss')),
 ]
 
 THRESHOLDS = [0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70]
@@ -143,29 +143,29 @@ def run():
 
     start = time.time()
 
-    for t_idx, target in enumerate(TARGET_COLUMNS, 1):
+    def train_single_target(t_idx, target):
         y_tr = raw.loc[idx_tr, target].values
         y_te = raw.loc[idx_te, target].values
         pos = int(y_tr.sum())
 
         if pos < 5 or (len(y_tr) - pos) < 5:
             print(f"[{t_idx:02d}] {target}: SKIP (too few samples)")
-            continue
+            return None
 
-        # Try all models, pick best by CV F1
         best, best_label, best_fn = None, None, None
+        target_results = []
         for label, model_fn in MODELS:
             try:
                 result = cv_evaluate(X_train, y_tr, model_fn, skf)
-                all_results.append({'target': target, 'model': label, **result})
+                target_results.append({'target': target, 'model': label, **result})
                 if best is None or result['thr_f1'] > best['thr_f1']:
                     best, best_label, best_fn = result, label, model_fn
-            except Exception as e:
+            except Exception:
                 pass
 
         if best is None:
             print(f"[{t_idx:02d}] {target}: FAILED")
-            continue
+            return None
 
         # Retrain best on full training set
         model = best_fn()
@@ -175,11 +175,13 @@ def run():
         probs = model.predict_proba(X_test_proc)[:, 1] if hasattr(model, 'predict_proba') and len(np.unique(y_tr)) > 1 else np.zeros(len(y_te))
         preds = (probs >= best['threshold']).astype(int)
         t_f1 = f1_score(y_te, preds, zero_division=0)
-        try: t_auc = roc_auc_score(y_te, probs) if len(np.unique(y_te)) > 1 else 0.5
-        except: t_auc = 0.5
+        try:
+            t_auc = roc_auc_score(y_te, probs) if len(np.unique(y_te)) > 1 else 0.5
+        except:
+            t_auc = 0.5
 
-        model_type = best_label.split('_')[0]  # LR, RF, or XGB
-        print(f"[{t_idx:02d}] {target:<35} -> {best_label:<16} CV-F1={best['thr_f1']:.4f}  Test-F1={t_f1:.4f}  thr={best['threshold']}")
+        model_type = best_label.split('_')[0]
+        print(f"[{t_idx:02d}] {target:<35} -> {best_label:<16} CV-F1={best['thr_f1']:.4f}  Test-F1={t_f1:.4f}  Test-AUC={t_auc:.4f}  thr={best['threshold']}")
 
         # Feature importance
         fi = {}
@@ -190,13 +192,30 @@ def run():
             pairs = sorted(zip(feat_names, np.abs(model.coef_[0])), key=lambda x: x[1], reverse=True)
             fi = {name: round(float(imp), 6) for name, imp in pairs[:10]}
 
-        final_models[target] = {
-            'model': model, 'model_type': model_type, 'pca': None,
-            'threshold': best['threshold'],
-            'cv_metrics': {'f1': best['f1'], 'auc': best['auc']},
-            'test_metrics': {'f1': t_f1, 'auc': t_auc, 'accuracy': accuracy_score(y_te, preds)},
-            'feature_importance': fi,
-        }
+        return (
+            target_results,
+            target,
+            {
+                'model': model, 'model_type': model_type, 'pca': None,
+                'threshold': best['threshold'],
+                'cv_metrics': {'f1': best['f1'], 'auc': best['auc']},
+                'test_metrics': {'f1': t_f1, 'auc': t_auc, 'accuracy': accuracy_score(y_te, preds)},
+                'feature_importance': fi,
+            }
+        )
+
+    # Execute all 32 targets in parallel using joblib
+    print("Training all 32 scholarship targets in parallel...")
+    parallel_outputs = joblib.Parallel(n_jobs=-1, prefer='threads')(
+        joblib.delayed(train_single_target)(t_idx, target)
+        for t_idx, target in enumerate(TARGET_COLUMNS, 1)
+    )
+
+    for item in parallel_outputs:
+        if item is not None:
+            t_results, target, model_info = item
+            all_results.extend(t_results)
+            final_models[target] = model_info
 
     elapsed = time.time() - start
     print(f"\nDone in {elapsed:.0f}s ({elapsed/60:.1f}min)")
