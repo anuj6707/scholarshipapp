@@ -69,6 +69,20 @@ class TestMLPrediction(unittest.TestCase):
             self.assertLessEqual(score_data["ml_score"], 1.0)
             self.assertGreaterEqual(score_data["recommendation_score"], 0.0)
             self.assertLessEqual(score_data["recommendation_score"], 1.0)
+    def test_rank_by_confidence(self):
+        from ml.predict import rank_by_confidence
+        result = rank_by_confidence(self.valid_student)
+        self.assertIn("eligible", result)
+        self.assertIn("ineligible", result)
+        self.assertIn("total_evaluated", result)
+        self.assertGreater(result["total_evaluated"], 0)
+        # At least some scholarships should be recommended
+        total = len(result["eligible"]) + len(result["ineligible"])
+        self.assertEqual(total, result["total_evaluated"])
+        # Check structure of eligible items
+        for item in result["eligible"]:
+            self.assertTrue(item["eligible"])
+            self.assertGreater(item["recommendation_score_pct"], 0)
 
 if __name__ == "__main__":
     unittest.main()

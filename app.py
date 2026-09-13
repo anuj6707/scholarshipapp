@@ -3,7 +3,7 @@ import secrets
 import logging
 from flask import Flask, render_template, request, redirect, url_for, session, flash, abort, jsonify
 from ml.model_loader import load_system, FEATURE_NAMES
-from ml.predict import predict_scholarships
+from ml.predict import predict_scholarships, rank_by_confidence
 from eligibility.eligibility_engine import (
     get_scholarships,
     get_scholarship_by_id,
@@ -182,15 +182,23 @@ def results():
         flash("Please complete the questionnaire first to view your recommendations.", "info")
         return redirect(url_for("questionnaire"))
 
-    # Step 1: Run Machine Learning predictions for supported scholarships
-    ai_scores = {}
-    try:
-        ai_scores = predict_scholarships(student_profile)
-    except Exception as e:
-        logger.error(f"AI Model prediction encountered error in /results: {e}", exc_info=True)
+    scoring_mode = request.args.get("mode", "rules")  # ?mode=confidence for ML-only
 
-    # Step 2: Evaluate hard eligibility and hybrid ranking
-    results_data = evaluate_and_rank_scholarships(student_profile, ai_scores)
+    if scoring_mode == "confidence":
+        # Mode 2: Confidence-only (no hardcoded eligibility rules)
+        try:
+            results_data = rank_by_confidence(student_profile)
+        except Exception as e:
+            logger.error(f"Confidence ranking error: {e}", exc_info=True)
+            results_data = {"eligible": [], "ineligible": [], "total_evaluated": 0}
+    else:
+        # Mode 1: Rules + ML (default)
+        ai_scores = {}
+        try:
+            ai_scores = predict_scholarships(student_profile)
+        except Exception as e:
+            logger.error(f"AI Model prediction encountered error in /results: {e}", exc_info=True)
+        results_data = evaluate_and_rank_scholarships(student_profile, ai_scores)
 
     eligible_scholarships = results_data.get("eligible", [])
     ineligible_scholarships = results_data.get("ineligible", [])
@@ -212,7 +220,8 @@ def results():
         ineligible=ineligible_scholarships,
         total_evaluated=total_evaluated,
         total_potential_benefit=total_potential_benefit,
-        high_match_count=high_match_count
+        high_match_count=high_match_count,
+        scoring_mode=scoring_mode,
     )
 
 @app.route("/scholarships")

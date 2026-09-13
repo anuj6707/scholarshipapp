@@ -1,463 +1,225 @@
 """
-ml/pipeline.py — Comparative ML Pipeline for Scholarship Recommendation
+ml/pipeline.py — Train scholarship recommendation models.
 
-Compares Logistic Regression, Random Forest, and XGBoost across all 32 scholarship
-targets using 5-fold stratified cross-validation, optional PCA, threshold optimization,
-and rigorous train/test separation.
+Compares Logistic Regression, Random Forest, and XGBoost for each of 32
+scholarship targets. Picks the best model per target using 5-fold
+stratified cross-validation (F1 score). Saves a single artifact.
 
-Usage:
-    python ml/pipeline.py
+Usage:  python ml/pipeline.py
 """
-import os
-import sys
-
-# Ensure project root is on sys.path for both script and module usage
-_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, _PROJECT_ROOT)
-
-import time
-import warnings
-import joblib
+import os, sys, time, warnings, joblib
 import numpy as np
 import pandas as pd
 from collections import Counter
 from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import (
-    accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
-)
+from sklearn.metrics import accuracy_score, f1_score, roc_auc_score, precision_score, recall_score
 from xgboost import XGBClassifier
+
+# Allow running as script: python ml/pipeline.py
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
 
 from ml.features import (
     RAW_FEATURES, TARGET_COLUMNS, ENGINEERED_FEATURES,
     CATEGORICAL_FEATURES, NUMERICAL_FEATURES, ALL_FEATURES,
-    engineer_features
+    engineer_features,
 )
 
 warnings.filterwarnings('ignore')
 
+# ─── Model Configs ───────────────────────────────────────────────────────────
+# Each config: (label, model_constructor). Keep it simple.
+MODELS = [
+    ("LR_C0.1_bal",   lambda: LogisticRegression(C=0.1, class_weight='balanced', max_iter=1000, random_state=42)),
+    ("LR_C1_bal",     lambda: LogisticRegression(C=1, class_weight='balanced', max_iter=1000, random_state=42)),
+    ("LR_C10",        lambda: LogisticRegression(C=10, max_iter=1000, random_state=42)),
+    ("RF_100_d8_bal",  lambda: RandomForestClassifier(n_estimators=100, max_depth=8, class_weight='balanced', min_samples_leaf=2, random_state=42, n_jobs=-1)),
+    ("RF_200_bal",     lambda: RandomForestClassifier(n_estimators=200, class_weight='balanced', min_samples_leaf=2, random_state=42, n_jobs=-1)),
+    ("RF_100",         lambda: RandomForestClassifier(n_estimators=100, max_depth=8, min_samples_leaf=2, random_state=42, n_jobs=-1)),
+    ("XGB_100_d3",     lambda: XGBClassifier(n_estimators=100, max_depth=3, learning_rate=0.1, random_state=42, n_jobs=-1, eval_metric='logloss')),
+    ("XGB_100_d5",     lambda: XGBClassifier(n_estimators=100, max_depth=5, learning_rate=0.1, random_state=42, n_jobs=-1, eval_metric='logloss')),
+    ("XGB_200_d5",     lambda: XGBClassifier(n_estimators=200, max_depth=5, learning_rate=0.05, random_state=42, n_jobs=-1, eval_metric='logloss')),
+]
+
 THRESHOLDS = [0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70]
 
 
-# ============================================================
-# PREPROCESSING HELPERS
-# ============================================================
+# ─── Preprocessing ───────────────────────────────────────────────────────────
 
-def fit_preprocessor(X_train):
-    """Fit scaler and encoder on training data. Returns dict (cross-version safe)."""
-    scaler = StandardScaler()
-    scaler.fit(X_train[NUMERICAL_FEATURES])
-
-    encoder = OneHotEncoder(handle_unknown='ignore', sparse_output=False)
-    encoder.fit(X_train[CATEGORICAL_FEATURES])
-
+def fit_preprocessor(X):
+    """Fit scaler + encoder on training data. Returns a dict (safe to serialize)."""
+    scaler = StandardScaler().fit(X[NUMERICAL_FEATURES])
+    encoder = OneHotEncoder(handle_unknown='ignore', sparse_output=False).fit(X[CATEGORICAL_FEATURES])
     return {
-        'scaler': scaler,
-        'encoder': encoder,
+        'scaler': scaler, 'encoder': encoder,
         'numerical_features': list(NUMERICAL_FEATURES),
         'categorical_features': list(CATEGORICAL_FEATURES),
     }
 
-
-def transform(preprocessor, X):
-    """Transform features using fitted preprocessor dict."""
-    num_data = preprocessor['scaler'].transform(X[preprocessor['numerical_features']])
-    cat_data = preprocessor['encoder'].transform(X[preprocessor['categorical_features']])
-    return np.hstack([num_data, cat_data])
-
-
-# ============================================================
-# MODEL CONFIGURATIONS
-# ============================================================
-
-def get_model_configs():
-    """Returns list of model configurations to evaluate."""
-    configs = []
-
-    # Logistic Regression (8 configs)
-    for C in [0.01, 0.1, 1, 10]:
-        for cw in [None, 'balanced']:
-            configs.append({
-                'name': 'LogisticRegression',
-                'params': {'C': C, 'class_weight': cw, 'max_iter': 1000,
-                           'random_state': 42, 'solver': 'lbfgs'},
-            })
-
-    # Random Forest (8 configs)
-    for n_est in [100, 200]:
-        for depth in [8, None]:
-            for cw in [None, 'balanced']:
-                configs.append({
-                    'name': 'RandomForest',
-                    'params': {'n_estimators': n_est, 'max_depth': depth,
-                               'min_samples_leaf': 2, 'class_weight': cw,
-                               'random_state': 42, 'n_jobs': -1},
-                })
-
-    # XGBoost (8 configs)
-    for n_est in [100, 200]:
-        for depth in [3, 5]:
-            for lr in [0.05, 0.1]:
-                configs.append({
-                    'name': 'XGBoost',
-                    'params': {'n_estimators': n_est, 'max_depth': depth,
-                               'learning_rate': lr, 'random_state': 42,
-                               'n_jobs': -1, 'eval_metric': 'logloss'},
-                })
-
-    return configs
+def transform(prep, X):
+    """Apply fitted preprocessor."""
+    return np.hstack([
+        prep['scaler'].transform(X[prep['numerical_features']]),
+        prep['encoder'].transform(X[prep['categorical_features']]),
+    ])
 
 
-def create_model(config):
-    """Instantiate a fresh model from config dict."""
-    name = config['name']
-    params = config['params']
-    if name == 'LogisticRegression':
-        return LogisticRegression(**params)
-    elif name == 'RandomForest':
-        return RandomForestClassifier(**params)
-    elif name == 'XGBoost':
-        return XGBClassifier(**params)
-    raise ValueError(f"Unknown model: {name}")
+# ─── Cross-Validation ────────────────────────────────────────────────────────
 
-
-# ============================================================
-# CROSS-VALIDATION FOR ONE CONFIG
-# ============================================================
-
-def evaluate_config(X_features, y, config, use_pca, skf):
+def cv_evaluate(X_feat, y, model_fn, skf):
     """
-    Run 5-fold stratified CV for one model config on one target.
-    Preprocessor is fitted inside each fold (no data leakage).
-    Returns dict with mean CV metrics, best threshold, and OOF F1.
+    Run 5-fold stratified CV. Returns best threshold and mean metrics.
+    Preprocessor is fitted inside each fold (no leakage).
     """
-    n = len(y)
-    oof_probs = np.full(n, np.nan)
-    fold_metrics = {k: [] for k in ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']}
+    oof_probs = np.full(len(y), np.nan)
+    f1s, aucs = [], []
 
-    for train_idx, val_idx in skf.split(X_features, y):
-        X_tr = X_features.iloc[train_idx]
-        X_val = X_features.iloc[val_idx]
-        y_tr, y_val = y[train_idx], y[val_idx]
+    for tr_idx, val_idx in skf.split(X_feat, y):
+        prep = fit_preprocessor(X_feat.iloc[tr_idx])
+        X_tr = transform(prep, X_feat.iloc[tr_idx])
+        X_val = transform(prep, X_feat.iloc[val_idx])
+        y_tr, y_val = y[tr_idx], y[val_idx]
 
-        # Fit preprocessor on fold train only
-        prep = fit_preprocessor(X_tr)
-        X_tr_proc = transform(prep, X_tr)
-        X_val_proc = transform(prep, X_val)
+        model = model_fn()
+        model.fit(X_tr, y_tr)
 
-        # Optional PCA fitted on fold train only
-        if use_pca:
-            pca = PCA(n_components=0.95, random_state=42)
-            X_tr_proc = pca.fit_transform(X_tr_proc)
-            X_val_proc = pca.transform(X_val_proc)
-
-        # Train model
-        model = create_model(config)
-        model.fit(X_tr_proc, y_tr)
-
-        # Predict probabilities
-        if hasattr(model, 'predict_proba') and len(np.unique(y_tr)) > 1:
-            probs = model.predict_proba(X_val_proc)[:, 1]
-        else:
-            probs = model.predict(X_val_proc).astype(float)
-
+        probs = model.predict_proba(X_val)[:, 1] if hasattr(model, 'predict_proba') and len(np.unique(y_tr)) > 1 else np.zeros(len(y_val))
         oof_probs[val_idx] = probs
 
-        # Fold metrics at default threshold 0.5
         preds = (probs >= 0.5).astype(int)
-        fold_metrics['accuracy'].append(accuracy_score(y_val, preds))
-        fold_metrics['precision'].append(precision_score(y_val, preds, zero_division=0))
-        fold_metrics['recall'].append(recall_score(y_val, preds, zero_division=0))
-        fold_metrics['f1'].append(f1_score(y_val, preds, zero_division=0))
+        f1s.append(f1_score(y_val, preds, zero_division=0))
         try:
-            auc = roc_auc_score(y_val, probs) if len(np.unique(y_val)) > 1 else 0.5
-        except Exception:
-            auc = 0.5
-        fold_metrics['roc_auc'].append(auc)
+            aucs.append(roc_auc_score(y_val, probs) if len(np.unique(y_val)) > 1 else 0.5)
+        except: aucs.append(0.5)
 
-    # Threshold optimization on OOF predictions
+    # Find best threshold on OOF predictions
     valid = ~np.isnan(oof_probs)
-    best_threshold, best_f1 = 0.5, 0.0
+    best_thr, best_f1 = 0.5, 0
     for t in THRESHOLDS:
-        f1_t = f1_score(y[valid], (oof_probs[valid] >= t).astype(int), zero_division=0)
-        if f1_t > best_f1:
-            best_f1 = f1_t
-            best_threshold = t
+        f = f1_score(y[valid], (oof_probs[valid] >= t).astype(int), zero_division=0)
+        if f > best_f1:
+            best_f1, best_thr = f, t
 
-    return {
-        'cv_accuracy_mean': np.mean(fold_metrics['accuracy']),
-        'cv_accuracy_std': np.std(fold_metrics['accuracy']),
-        'cv_precision_mean': np.mean(fold_metrics['precision']),
-        'cv_recall_mean': np.mean(fold_metrics['recall']),
-        'cv_f1_mean': np.mean(fold_metrics['f1']),
-        'cv_f1_std': np.std(fold_metrics['f1']),
-        'cv_roc_auc_mean': np.mean(fold_metrics['roc_auc']),
-        'cv_roc_auc_std': np.std(fold_metrics['roc_auc']),
-        'best_threshold': best_threshold,
-        'threshold_f1': best_f1,
-    }
+    return {'f1': np.mean(f1s), 'auc': np.mean(aucs), 'threshold': best_thr, 'thr_f1': best_f1}
 
 
-# ============================================================
-# FEATURE IMPORTANCE
-# ============================================================
+# ─── Main Pipeline ───────────────────────────────────────────────────────────
 
-def get_feature_importance(model, config_name, feature_names):
-    """Extract top-10 feature importances from fitted model."""
-    if config_name in ('RandomForest', 'XGBoost') and hasattr(model, 'feature_importances_'):
-        importances = model.feature_importances_
-    elif config_name == 'LogisticRegression' and hasattr(model, 'coef_'):
-        importances = np.abs(model.coef_[0])
-    else:
-        return []
+def run():
+    print("=" * 70)
+    print("SCHOLARSHIP ML PIPELINE")
+    print("=" * 70)
 
-    if len(importances) != len(feature_names):
-        feature_names = [f'feature_{i}' for i in range(len(importances))]
-
-    pairs = sorted(zip(feature_names, importances), key=lambda x: x[1], reverse=True)
-    return pairs[:10]
-
-
-# ============================================================
-# MAIN PIPELINE
-# ============================================================
-
-def run_pipeline():
-    """Main pipeline: load data, compare models, select best, save artifact."""
-    print("=" * 80)
-    print("SCHOLARSHIP ML COMPARATIVE PIPELINE")
-    print("=" * 80)
-
-    # --- Load data ---
-    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'scholarship_dataset.csv')
-    raw_df = pd.read_csv(csv_path)
-    print(f"\nLoaded dataset: {raw_df.shape[0]} rows x {raw_df.shape[1]} columns")
-
-    # Verify columns
-    for col in RAW_FEATURES + TARGET_COLUMNS:
-        assert col in raw_df.columns, f"Missing column: {col}"
-
-    # Engineer features dynamically from raw features only
-    df = engineer_features(raw_df[RAW_FEATURES].copy())
+    # Load data
+    csv_path = os.path.join(_ROOT, 'data', 'scholarship_dataset.csv')
+    raw = pd.read_csv(csv_path)
+    df = engineer_features(raw[RAW_FEATURES].copy())
     X_all = df[ALL_FEATURES]
+    print(f"\nDataset: {len(raw)} rows, {len(ALL_FEATURES)} features, {len(TARGET_COLUMNS)} targets")
 
-    print(f"Features after engineering: {len(ALL_FEATURES)} "
-          f"({len(CATEGORICAL_FEATURES)} cat + {len(NUMERICAL_FEATURES)} num)")
-    print(f"Targets: {len(TARGET_COLUMNS)} scholarships")
+    # Class distribution
+    print(f"\n{'Target':<35} {'Pos':>5} {'Neg':>5} {'%':>6}")
+    print("-" * 55)
+    for t in TARGET_COLUMNS:
+        p = int(raw[t].sum())
+        print(f"{t:<35} {p:>5} {len(raw)-p:>5} {100*p/len(raw):>5.1f}%")
 
-    # --- Class distribution ---
-    print(f"\n{'='*80}")
-    print("CLASS DISTRIBUTION (full dataset)")
-    print(f"{'='*80}")
-    print(f"{'Scholarship':<35} {'Pos':>6} {'Neg':>6} {'Pos%':>7}")
-    print("-" * 56)
-    for target in TARGET_COLUMNS:
-        pos = int(raw_df[target].sum())
-        neg = len(raw_df) - pos
-        print(f"{target:<35} {pos:>6} {neg:>6} {100*pos/len(raw_df):>6.1f}%")
+    # 80/20 split
+    X_train, X_test, idx_tr, idx_te = train_test_split(X_all, raw.index, test_size=0.2, random_state=42)
+    print(f"\nTrain: {len(X_train)}, Test: {len(X_test)}")
 
-    # --- 80/20 train/test split ---
-    X_train_feat, X_test_feat, idx_train, idx_test = train_test_split(
-        X_all, raw_df.index, test_size=0.20, random_state=42
-    )
-    y_train_all = {t: raw_df.loc[idx_train, t].values for t in TARGET_COLUMNS}
-    y_test_all = {t: raw_df.loc[idx_test, t].values for t in TARGET_COLUMNS}
-    print(f"\nTrain: {len(X_train_feat)}, Test: {len(X_test_feat)} (held out)")
-
-    # --- Model configs ---
-    model_configs = get_model_configs()
-    pca_options = [False, True]
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-    total_cfgs = len(model_configs) * len(pca_options)
-    print(f"Configs per target: {total_cfgs} ({len(model_configs)} models x {len(pca_options)} PCA)")
-    print(f"Total experiments: {total_cfgs * len(TARGET_COLUMNS)}\n")
+    all_results, final_models = [], {}
 
-    # --- Cross-validation ---
-    all_results = []
-    best_per_target = {}
+    # Final preprocessor on full training set (for artifact)
+    final_prep = fit_preprocessor(X_train)
+    X_train_proc = transform(final_prep, X_train)
+    X_test_proc = transform(final_prep, X_test)
+    feat_names = list(NUMERICAL_FEATURES) + list(final_prep['encoder'].get_feature_names_out(CATEGORICAL_FEATURES))
+
     start = time.time()
 
     for t_idx, target in enumerate(TARGET_COLUMNS, 1):
-        y_train = y_train_all[target]
-        pos_train = int(y_train.sum())
-        pos_pct = 100 * pos_train / len(y_train)
+        y_tr = raw.loc[idx_tr, target].values
+        y_te = raw.loc[idx_te, target].values
+        pos = int(y_tr.sum())
 
-        print(f"[{t_idx:02d}/32] {target}  (pos={pos_train}/{len(y_train)}, {pos_pct:.0f}%)")
-
-        if pos_train < 5 or (len(y_train) - pos_train) < 5:
-            print(f"  SKIP — extreme class imbalance")
+        if pos < 5 or (len(y_tr) - pos) < 5:
+            print(f"[{t_idx:02d}] {target}: SKIP (too few samples)")
             continue
 
-        target_results = []
-        for config in model_configs:
-            for use_pca in pca_options:
-                pca_str = "PCA95" if use_pca else "NoPCA"
-                try:
-                    result = evaluate_config(X_train_feat, y_train, config, use_pca, skf)
-                    row = {
-                        'scholarship': target,
-                        'model': config['name'],
-                        'pca': pca_str,
-                        'params': str({k: v for k, v in config['params'].items()
-                                       if k not in ('random_state', 'n_jobs', 'solver',
-                                                     'max_iter', 'eval_metric')}),
-                        **result,
-                    }
-                    target_results.append((row, config, use_pca))
-                    all_results.append(row)
-                except Exception as e:
-                    print(f"  ERROR {config['name']}|{pca_str}: {e}")
+        # Try all models, pick best by CV F1
+        best, best_label, best_fn = None, None, None
+        for label, model_fn in MODELS:
+            try:
+                result = cv_evaluate(X_train, y_tr, model_fn, skf)
+                all_results.append({'target': target, 'model': label, **result})
+                if best is None or result['thr_f1'] > best['thr_f1']:
+                    best, best_label, best_fn = result, label, model_fn
+            except Exception as e:
+                pass
 
-        if target_results:
-            best_row, best_cfg, best_pca = max(target_results, key=lambda x: x[0]['cv_f1_mean'])
-            best_per_target[target] = (best_row, best_cfg, best_pca)
-            print(f"  BEST: {best_row['model']}|{best_row['pca']}  "
-                  f"CV-F1={best_row['cv_f1_mean']:.4f}  thr={best_row['best_threshold']}")
-
-    elapsed = time.time() - start
-    print(f"\nCV completed in {elapsed:.0f}s ({elapsed/60:.1f}min)")
-
-    # --- Final test evaluation ---
-    print(f"\n{'='*80}")
-    print("FINAL TEST SET EVALUATION")
-    print(f"{'='*80}")
-
-    # Fit final preprocessor on full training set
-    final_prep = fit_preprocessor(X_train_feat)
-    X_train_proc = transform(final_prep, X_train_feat)
-    X_test_proc = transform(final_prep, X_test_feat)
-
-    # Feature names after preprocessing
-    num_names = list(NUMERICAL_FEATURES)
-    cat_names = list(final_prep['encoder'].get_feature_names_out(CATEGORICAL_FEATURES))
-    all_proc_names = num_names + list(cat_names)
-
-    final_models = {}
-    fi_rows = []
-
-    print(f"\n{'Target':<35} {'Model':<18} {'PCA':<6} {'TestF1':>7} {'TestAUC':>8} {'TestAcc':>8}")
-    print("-" * 85)
-
-    for target in TARGET_COLUMNS:
-        if target not in best_per_target:
+        if best is None:
+            print(f"[{t_idx:02d}] {target}: FAILED")
             continue
 
-        best_row, best_cfg, use_pca = best_per_target[target]
-        y_train = y_train_all[target]
-        y_test = y_test_all[target]
-        threshold = best_row['best_threshold']
+        # Retrain best on full training set
+        model = best_fn()
+        model.fit(X_train_proc, y_tr)
 
-        # Apply PCA if selected
-        X_tr = X_train_proc.copy()
-        X_te = X_test_proc.copy()
-        pca_obj = None
-        if use_pca:
-            pca_obj = PCA(n_components=0.95, random_state=42)
-            X_tr = pca_obj.fit_transform(X_tr)
-            X_te = pca_obj.transform(X_te)
+        # Test evaluation
+        probs = model.predict_proba(X_test_proc)[:, 1] if hasattr(model, 'predict_proba') and len(np.unique(y_tr)) > 1 else np.zeros(len(y_te))
+        preds = (probs >= best['threshold']).astype(int)
+        t_f1 = f1_score(y_te, preds, zero_division=0)
+        try: t_auc = roc_auc_score(y_te, probs) if len(np.unique(y_te)) > 1 else 0.5
+        except: t_auc = 0.5
 
-        # Train final model on full training set
-        model = create_model(best_cfg)
-        model.fit(X_tr, y_train)
-
-        # Evaluate on test set
-        if hasattr(model, 'predict_proba') and len(np.unique(y_train)) > 1:
-            test_probs = model.predict_proba(X_te)[:, 1]
-        else:
-            test_probs = model.predict(X_te).astype(float)
-
-        test_preds = (test_probs >= threshold).astype(int)
-        t_acc = accuracy_score(y_test, test_preds)
-        t_prec = precision_score(y_test, test_preds, zero_division=0)
-        t_rec = recall_score(y_test, test_preds, zero_division=0)
-        t_f1 = f1_score(y_test, test_preds, zero_division=0)
-        try:
-            t_auc = roc_auc_score(y_test, test_probs) if len(np.unique(y_test)) > 1 else 0.5
-        except Exception:
-            t_auc = 0.5
-
-        pca_label = "PCA95" if use_pca else "NoPCA"
-        print(f"{target:<35} {best_row['model']:<18} {pca_label:<6} {t_f1:>7.4f} {t_auc:>8.4f} {t_acc:>8.4f}")
-
-        final_models[target] = {
-            'model': model,
-            'model_type': best_row['model'],
-            'pca': pca_obj,
-            'threshold': threshold,
-            'cv_metrics': {
-                'cv_f1_mean': best_row['cv_f1_mean'],
-                'cv_f1_std': best_row['cv_f1_std'],
-                'cv_accuracy_mean': best_row['cv_accuracy_mean'],
-                'cv_roc_auc_mean': best_row['cv_roc_auc_mean'],
-            },
-            'test_metrics': {
-                'accuracy': t_acc, 'precision': t_prec,
-                'recall': t_rec, 'f1': t_f1, 'roc_auc': t_auc,
-            },
-        }
-
-        # Mark selected row in all_results
-        for r in all_results:
-            if (r['scholarship'] == target and r['model'] == best_row['model']
-                    and r['pca'] == best_row['pca'] and r['params'] == best_row['params']):
-                r['test_f1'] = t_f1
-                r['test_roc_auc'] = t_auc
-                r['test_accuracy'] = t_acc
-                r['selected'] = True
-                break
+        model_type = best_label.split('_')[0]  # LR, RF, or XGB
+        print(f"[{t_idx:02d}] {target:<35} -> {best_label:<16} CV-F1={best['thr_f1']:.4f}  Test-F1={t_f1:.4f}  thr={best['threshold']}")
 
         # Feature importance
-        feat_names = all_proc_names if not use_pca else [f'PC{i+1}' for i in range(X_tr.shape[1])]
-        for fname, imp in get_feature_importance(model, best_row['model'], feat_names):
-            fi_rows.append({'scholarship': target, 'model_type': best_row['model'],
-                            'feature': fname, 'importance': round(imp, 6)})
+        fi = {}
+        if hasattr(model, 'feature_importances_'):
+            pairs = sorted(zip(feat_names, model.feature_importances_), key=lambda x: x[1], reverse=True)
+            fi = {name: round(float(imp), 6) for name, imp in pairs[:10]}
+        elif hasattr(model, 'coef_'):
+            pairs = sorted(zip(feat_names, np.abs(model.coef_[0])), key=lambda x: x[1], reverse=True)
+            fi = {name: round(float(imp), 6) for name, imp in pairs[:10]}
 
-    # --- Save comparison CSV ---
-    comp_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model_comparison.csv')
-    pd.DataFrame(all_results).to_csv(comp_path, index=False)
-    print(f"\nSaved: {comp_path} ({len(all_results)} rows)")
+        final_models[target] = {
+            'model': model, 'model_type': model_type, 'pca': None,
+            'threshold': best['threshold'],
+            'cv_metrics': {'f1': best['f1'], 'auc': best['auc']},
+            'test_metrics': {'f1': t_f1, 'auc': t_auc, 'accuracy': accuracy_score(y_te, preds)},
+            'feature_importance': fi,
+        }
 
-    # --- Save feature importance CSV ---
+    elapsed = time.time() - start
+    print(f"\nDone in {elapsed:.0f}s ({elapsed/60:.1f}min)")
+
+    # Summary
+    counts = Counter(m['model_type'] for m in final_models.values())
+    avg_f1 = np.mean([m['test_metrics']['f1'] for m in final_models.values()])
+    avg_auc = np.mean([m['test_metrics']['auc'] for m in final_models.values()])
+    print(f"\nModel selection: {dict(counts.most_common())}")
+    print(f"Avg test F1: {avg_f1:.4f}, Avg test AUC: {avg_auc:.4f}")
+
+    # Save comparison CSV
+    pd.DataFrame(all_results).to_csv(os.path.join(os.path.dirname(__file__), 'model_comparison.csv'), index=False)
+
+    # Save feature importance CSV
+    fi_rows = []
+    for target, info in final_models.items():
+        for feat, imp in info.get('feature_importance', {}).items():
+            fi_rows.append({'target': target, 'feature': feat, 'importance': imp})
     if fi_rows:
-        fi_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'feature_importance.csv')
-        pd.DataFrame(fi_rows).to_csv(fi_path, index=False)
-        print(f"Saved: {fi_path}")
+        pd.DataFrame(fi_rows).to_csv(os.path.join(os.path.dirname(__file__), 'feature_importance.csv'), index=False)
 
-    # --- Summary ---
-    print(f"\n{'='*80}")
-    print("SUMMARY")
-    print(f"{'='*80}")
-
-    for mn in ['LogisticRegression', 'RandomForest', 'XGBoost']:
-        for ps in ['NoPCA', 'PCA95']:
-            subset = [r for r in all_results if r['model'] == mn and r['pca'] == ps]
-            if subset:
-                print(f"  {mn:<22} {ps:<6}  AvgCvF1={np.mean([r['cv_f1_mean'] for r in subset]):.4f}  "
-                      f"AvgCvAUC={np.mean([r['cv_roc_auc_mean'] for r in subset]):.4f}")
-
-    # Best model selection frequency
-    print("\nBest model selection:")
-    for name, count in Counter(m['model_type'] for m in final_models.values()).most_common():
-        print(f"  {name}: {count}/32 scholarships")
-    pca_counts = Counter('PCA' if m['pca'] is not None else 'NoPCA' for m in final_models.values())
-    for name, count in pca_counts.most_common():
-        print(f"  {name}: {count}/32 scholarships")
-
-    # Test performance
-    if final_models:
-        tf1 = np.mean([m['test_metrics']['f1'] for m in final_models.values()])
-        tauc = np.mean([m['test_metrics']['roc_auc'] for m in final_models.values()])
-        tacc = np.mean([m['test_metrics']['accuracy'] for m in final_models.values()])
-        print(f"\nFinal test performance (avg across {len(final_models)} targets):")
-        print(f"  F1:  {tf1:.4f}")
-        print(f"  AUC: {tauc:.4f}")
-        print(f"  Acc: {tacc:.4f}")
-
-    # --- Save artifact ---
+    # Save artifact
     artifact = {
         'preprocessor': final_prep,
         'models': final_models,
@@ -468,15 +230,12 @@ def run_pipeline():
         'numerical_features': NUMERICAL_FEATURES,
         'categorical_features': CATEGORICAL_FEATURES,
     }
-
-    pkl_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scholarship_system.pkl')
+    pkl_path = os.path.join(os.path.dirname(__file__), 'scholarship_system.pkl')
     joblib.dump(artifact, pkl_path, compress=3)
     mb = os.path.getsize(pkl_path) / (1024 * 1024)
-    print(f"\nSaved artifact: {pkl_path} ({mb:.2f} MB)")
-    print("\n" + "=" * 80)
-    print("PIPELINE COMPLETE")
-    print("=" * 80)
+    print(f"\nSaved: {pkl_path} ({mb:.2f} MB)")
+    print("=" * 70)
 
 
 if __name__ == '__main__':
-    run_pipeline()
+    run()
