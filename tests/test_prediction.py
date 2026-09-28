@@ -83,6 +83,14 @@ class TestMLPrediction(unittest.TestCase):
         for item in result["eligible"]:
             self.assertTrue(item["eligible"])
             self.assertGreater(item["recommendation_score_pct"], 0)
+            self.assertIsInstance(item.get("eligibility_reasons"), list)
+            self.assertGreater(len(item["eligibility_reasons"]), 0)
+
+        # Check structure of ineligible items
+        for item in result["ineligible"]:
+            self.assertFalse(item["eligible"])
+            self.assertIsInstance(item.get("failed_requirements"), list)
+            self.assertGreater(len(item["failed_requirements"]), 0)
 
 if __name__ == "__main__":
     unittest.main()
