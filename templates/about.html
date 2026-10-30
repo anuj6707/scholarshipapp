@@ -16,16 +16,14 @@
     
     <!-- Hybrid Philosophy Card -->
     <div class="detail-card">
-      <h2 class="detail-card-title">1. The Hybrid Recommendation Architecture</h2>
+      <h2 class="detail-card-title">1. The Machine Learning Recommendation Architecture</h2>
       <p style="color: var(--slate-700); line-height: 1.7; margin-bottom: 1rem;">
-        {{ app_name }} uses a <strong>two-stage hybrid recommendation system</strong>. Many naive recommendation engines fail in financial aid because they allow probabilistic models to recommend schemes for which the student violates strict statutory rules (e.g. recommending female-exclusive scholarships to male students or Maharashtra-domicile schemes to out-of-state applicants).
+        {{ app_name }} uses a <strong>Machine Learning Engine</strong>.Our system uses machine learning algorithms such as Logistic Regression, Random Forest, and XGBoost to analyse student profiles and predict scholarship match scores. It uses cross-validation and optimized classification thresholds to improve prediction performance and identify scholarships that best match each student's profile.
       </p>
       <div style="background-color: var(--slate-50); padding: 1.25rem; border-radius: var(--radius-md); border-left: 4px solid var(--primary-600); font-size: 0.95rem; color: var(--slate-800); margin-bottom: 1rem;">
-        <strong>Rule Engine Priority:</strong> The rule-based eligibility engine takes absolute precedence. If a student fails any hard criterion (gender, age, income ceiling, branch, domicile, disability), the scholarship is marked ineligible and excluded from the primary eligible recommendations.
+        <strong>Model Priority:</strong> Our system selects the best-performing machine learning model based on F1 score to predict scholarship match scores and provide personalized recommendations for students..
       </div>
-      <p style="color: var(--slate-700); line-height: 1.7;">
-        Only scholarships that pass 100% of hard statutory constraints proceed to scoring and ranking.
-      </p>
+      
     </div>
 
     <!-- Machine Learning Model Card -->
